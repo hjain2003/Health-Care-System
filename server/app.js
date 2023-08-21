@@ -1,6 +1,9 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { connectDB } from "./dbconn/conn.js";
+import userRouter from "./routes/user_routes.js";
+
 
 const app =  express();
 dotenv.config({ path: './config.env' });
@@ -10,6 +13,7 @@ connectDB();
 
 //middlewares
 app.use(express.json());
+app.use('/user',userRouter);
 
 app.get('/', (req, res) => {
     res.send(`Hello world app`);
