@@ -2,6 +2,8 @@ import mongoose, { model } from "mongoose";
 import { Schema } from "mongoose";
 import jwt from 'jsonwebtoken';
 
+//patient will only write the date and the remarks
+//after doctor accepts a patient's booking, a new window will pop up that will prompt the doctor to input a time. aFTER the doctor enters the time and presses OK, the booking card on the atient's side will show a confirmed status with the time given by the doctor.
 const bookingSchema = new mongoose.Schema({
     date: {
         type: String,
@@ -19,18 +21,6 @@ const bookingSchema = new mongoose.Schema({
         type : mongoose.Types.ObjectId,
         ref: "User"
     }],
-    stock:[{
-        type : mongoose.Types.ObjectId,
-        ref: "Stock"
-    }],
-    tokens : [
-        {
-            token:{
-                type:String,
-                required :true
-            }
-        }
-    ],
 });
   
 
