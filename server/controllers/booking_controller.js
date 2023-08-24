@@ -1,4 +1,5 @@
 import Booking from "../models/Booking.js";
+import User from "../models/User.js";
 
 export const bookApp = async (req, res) => {
     try {
@@ -46,9 +47,8 @@ export const seeAllBookings = async (req, res) => {
 
 export const seeMyBookings = async (req, res) => {
     try {
-        const user = req.rootUser; // The logged-in user
+        const user = req.rootUser;
 
-        // Find all bookings associated with the user
         const bookings = await Booking.find({ user: user._id });
 
         if (!bookings) {
@@ -56,6 +56,33 @@ export const seeMyBookings = async (req, res) => {
         }
 
         return res.status(200).json({ bookings });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred' });
+    }
+};
+
+export const cancelBooking = async (req, res) => {
+    try {
+        const user = req.rootUser; 
+        const bookingId = req.params.bookingId; 
+
+        const booking = await Booking.findById(bookingId);
+
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        if (booking.user.toString() !== user._id.toString()) {
+            return res.status(403).json({ message: 'You are not authorized to cancel this booking' });
+        }
+
+        user.bookings.pull(booking._id);
+        await user.save();
+
+        await Booking.findByIdAndDelete(bookingId);
+
+        return res.status(200).json({ message: 'Booking canceled successfully' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'An error occurred' });
