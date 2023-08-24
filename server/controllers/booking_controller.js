@@ -10,9 +10,14 @@ export const bookApp = async (req, res) => {
             return res.status(422).json({ error: "empty fields!" });
         }
 
+        if (user.role !== 'patient') {
+            return res.status(403).json({ error: "You are not authorized to book appointments" });
+        }
+
         // Create a new booking
         const booking = new Booking({
             date,
+            time:'Not confirmed yet',
             remarks,
             bookedOrNot: 'No',
             user: user._id,
@@ -33,6 +38,10 @@ export const bookApp = async (req, res) => {
 export const seeAllBookings = async (req, res) => {
     try {
         const bookings = await Booking.find().populate('user', 'name');
+        const user = req.rootUser;
+        if (user.role !== 'doctor') {
+            return res.status(403).json({ error: "You are not authorized to see all appointments" });
+        }
 
         if (!bookings) {
             return res.status(404).json({ message: 'No bookings found' });
@@ -77,12 +86,44 @@ export const cancelBooking = async (req, res) => {
             return res.status(403).json({ message: 'You are not authorized to cancel this booking' });
         }
 
-        user.bookings.pull(booking._id);
-        await user.save();
+        // Remove the booking from the User schema's bookings array
+        await User.updateOne({ _id: user._id }, { $pull: { bookings: bookingId } });
 
+        // Delete the booking from the Booking collection
         await Booking.findByIdAndDelete(bookingId);
 
         return res.status(200).json({ message: 'Booking canceled successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred' });
+    }
+};
+
+export const confirmBooking = async (req, res) => {
+    try {
+        const bookingId = req.params.bookingId;
+        const { time } = req.body; // Time input from the doctor
+        const user = req.rootUser;
+
+        if (user.role !== 'doctor') {
+            return res.status(403).json({ error: "You are not authorized to book appointments" });
+        }
+
+        if(!time){
+            return res.status(422).json({ error: "empty fields!" });
+        }
+
+        const booking = await Booking.findById(bookingId);
+
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        booking.bookedOrNot = time; 
+        booking.time = time; 
+        await booking.save();
+
+        return res.status(200).json({ message: 'Booking confirmed successfully' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'An error occurred' });

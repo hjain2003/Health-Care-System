@@ -26,10 +26,6 @@ const userSchema = new mongoose.Schema({
         type : mongoose.Types.ObjectId,
         ref: "Record"
     }],
-    stock:[{
-        type : mongoose.Types.ObjectId,
-        ref: "Stock"
-    }],
     tokens : [
         {
             token:{
