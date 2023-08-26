@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { BsFillHouseFill, BsFillBookmarkStarFill, BsFillJournalBookmarkFill } from 'react-icons/bs';
 import { CgShutterstock } from 'react-icons/cg';
@@ -24,16 +25,16 @@ const Navbar = () => {
       </div>
       <div className={`menu ${showMenu ? 'show' : ''}`}>
         <div className='nel' id="top-menu-item">
-          <BsFillHouseFill className='sign' />Dashboard
+          <BsFillHouseFill className='sign' /><Link to="/" className='uwu'>Dashboard</Link>
         </div>
         <div className='nel'>
-          <BsFillBookmarkStarFill className='sign' />Bookings
+          <BsFillBookmarkStarFill className='sign' /><Link to="/booking" className='uwu'>Bookings</Link>
         </div>
         <div className='nel'>
-          <BsFillJournalBookmarkFill className='sign' />Past Records
+          <BsFillJournalBookmarkFill className='sign' /><Link to="/record" className='uwu'>Past Records</Link>
         </div>
         <div className='nel'>
-          <CgShutterstock className='sign' /> Stocks
+          <CgShutterstock className='sign' /><Link to="/stock" className='uwu'>Stocks</Link>
         </div>
       </div>
     </div>
