@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { BsFillHouseFill, BsFillBookmarkStarFill, BsFillJournalBookmarkFill } from 'react-icons/bs';
 import { CgShutterstock } from 'react-icons/cg';
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const navigate = useNavigate(); // Hook to handle navigation
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
-  };
-
-  const handleNavigation = (path) => {
-    navigate(path);
-    setShowMenu(false); // Close the menu after navigation
   };
 
   return (
@@ -30,17 +24,17 @@ const Navbar = () => {
         </div>
       </div>
       <div className={`menu ${showMenu ? 'show' : ''}`}>
-        <div className='nel' id="top-menu-item" onClick={() => handleNavigation('/')}>
-          <BsFillHouseFill className='sign' />Dashboard
+        <div className='nel' id="top-menu-item">
+          <BsFillHouseFill className='sign' /><Link to="/" className='uwu'>Dashboard</Link>
         </div>
-        <div className='nel' onClick={() => handleNavigation('/booking')}>
-          <BsFillBookmarkStarFill className='sign' />Bookings
+        <div className='nel'>
+          <BsFillBookmarkStarFill className='sign' /><Link to="/booking" className='uwu'>Bookings</Link>
         </div>
-        <div className='nel' onClick={() => handleNavigation('/record')}>
-          <BsFillJournalBookmarkFill className='sign' />Past Records
+        <div className='nel'>
+          <BsFillJournalBookmarkFill className='sign' /><Link to="/record" className='uwu'>Past Records</Link>
         </div>
-        <div className='nel' onClick={() => handleNavigation('/stock')}>
-          <CgShutterstock className='sign' /> Stocks
+        <div className='nel'>
+          <CgShutterstock className='sign' /><Link to="/stock" className='uwu'>Stocks</Link>
         </div>
       </div>
     </div>
