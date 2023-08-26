@@ -52,3 +52,8 @@
     z-index: 100;
     margin-left: -40px;
 }
+@media(max-width:415px){
+    .login_box{
+        width: 300px;
+    }
+}
