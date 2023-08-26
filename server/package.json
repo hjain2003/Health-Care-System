@@ -13,6 +13,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "mongodb": "^5.7.0",
-    "mongoose": "^7.4.3"
+    "mongoose": "^7.4.3",
+    "nodemailer": "^6.9.4"
   }
 }
