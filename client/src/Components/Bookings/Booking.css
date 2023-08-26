@@ -1,8 +1,15 @@
 .booking-container{
     display: flex;
+    flex-direction: row;
+    width: 100%;
 }
 
 .bookings-content{
     margin-top: 10vh;
+    width: 100%;
+}
+.booking-header{
     text-align: center;
+    align-items: center;
+    justify-content: center;
 }
