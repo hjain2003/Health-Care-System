@@ -1,4 +1,5 @@
 .container {
+  z-index: 1000;
   padding-top: 4vh;
   background-color: rgb(255, 255, 255);
   display: flex;
@@ -6,11 +7,11 @@
   text-align: left;
   padding-left: 2vw;
   height: 96vh;
-  width: 15%;
   box-shadow: 2px 0px 40px 1px rgba(192, 192, 192, 0.8);
   font-size: 1.25vw;
-  position: relative; /* Add position relative for proper positioning */
+  position: fixed; 
 }
+
 
 .heading {
   color: #402ACC;
@@ -56,6 +57,12 @@
   align-items: center;
 }
 
+.uwu{
+  width: 100%;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
 @media (max-width:390px){
   .container{
     margin-top: -35px;
@@ -63,10 +70,12 @@
 }
 @media (max-width: 800px) {
   .container {
+    position: fixed;
+    top: 0;
     font-size: 2.6vw;
     background-color: #65656500;
     box-shadow: none;
-    width: 55vw;
+    width: 30vw;
     padding-left: 0vh;
     margin-right: 0vh;
     margin-top: -3vh;
@@ -77,7 +86,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background-color: #ffffff;
+    background-color: #ffffffdd;
     height: calc(100% - 3.2vh); /* Adjust height to account for heading */
     position: absolute;
     top: 3.2vh; /* Offset for heading */

@@ -24,18 +24,29 @@ const Navbar = () => {
         </div>
       </div>
       <div className={`menu ${showMenu ? 'show' : ''}`}>
+        <Link to="/" className='uwu'>
         <div className='nel' id="top-menu-item">
-          <BsFillHouseFill className='sign' /><Link to="/" className='uwu'>Dashboard</Link>
-        </div>
+              <BsFillHouseFill className='sign' />Dashboard
+            </div>
+        </Link>
+
+        <Link to="/booking" className='uwu'>
         <div className='nel'>
-          <BsFillBookmarkStarFill className='sign' /><Link to="/booking" className='uwu'>Bookings</Link>
+          <BsFillBookmarkStarFill className='sign' />Bookings
         </div>
+        </Link>
+
+        <Link to="/record" className='uwu'>
         <div className='nel'>
-          <BsFillJournalBookmarkFill className='sign' /><Link to="/record" className='uwu'>Past Records</Link>
+          <BsFillJournalBookmarkFill className='sign' />Past Records
         </div>
+        </Link>
+
+        <Link to="/stock" className='uwu'>
         <div className='nel'>
-          <CgShutterstock className='sign' /><Link to="/stock" className='uwu'>Stocks</Link>
+          <CgShutterstock className='sign' />Stocks
         </div>
+        </Link>
       </div>
     </div>
   );
