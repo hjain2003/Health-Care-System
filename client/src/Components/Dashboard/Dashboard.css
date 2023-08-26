@@ -1,11 +1,9 @@
-.dash-contain{
+.full_page_dashboard{
     display: flex;
     flex-direction: row;
+    height: 100vh;
+    width: 100%;
 }
-
-.header{
-    margin-top: 70px;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+.navbar_container{
+    border: 2px solid black;
 }

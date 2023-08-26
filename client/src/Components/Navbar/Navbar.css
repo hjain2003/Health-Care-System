@@ -29,13 +29,20 @@
   align-items: center;
   border-radius: 1vh;
   width: 80%;
+  color: black;
   cursor: pointer;
   text-decoration: none!important;
 }
-
 .nel:hover {
   background-color: #402ACC;
-  color: white!important;
+  color: white;
+}
+.menu a{
+  text-decoration: none;
+  color: black;
+}
+.menu a:hover{
+  color: white;
 }
 
 .sign {

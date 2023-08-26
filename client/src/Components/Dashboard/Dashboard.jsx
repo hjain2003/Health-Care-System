@@ -4,9 +4,11 @@ import Navbar from '../Navbar/Navbar';
 
 const Dashboard = () => {
   return (
-    <div className='dash-contain'>
-    <Navbar/>
-    <div className='header'> HELLO WORLD </div>
+    <div className="full_page_dashboard">
+      <Navbar/>
+      <div className="dashboard_content">
+        <span className="pages">Pages</span>
+      </div>
     </div>
   )
 }
