@@ -1,0 +1,24 @@
+.full_page_register{
+    height: 100vh;
+    width: 100%;
+    background-color: #F0F2FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.register_box{
+    height: 450px;
+    width: 350px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(270deg, #71DDB1 -9.55%, #1A4FBA 50%);
+    border-radius: 23px;
+    color: white;
+}
+.register_box input{
+    text-decoration: none;
+    border-radius: 12px;
+    border: none;
+    padding: 10px;
+}
