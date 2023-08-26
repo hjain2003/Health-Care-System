@@ -1,0 +1,8 @@
+.booking-container{
+    display: flex;
+}
+
+.bookings-content{
+    margin-top: 10vh;
+    text-align: center;
+}
