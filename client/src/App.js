@@ -12,7 +12,7 @@ import Register from './Components/Register/Register';
 function App() {
   return (
     <div className="App">
-      <Navbar/>
+      {/* <Navbar/> */}
       <Routes>
         <Route path='/' element={<Dashboard/>}/>
         <Route path='/register' element={<Register/>}/>
