@@ -1,0 +1,11 @@
+.dash-contain{
+    display: flex;
+    flex-direction: row;
+}
+
+.header{
+    margin-top: 70px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}

@@ -1,0 +1,72 @@
+.bookcard_container {
+  margin-left: 5vw;
+  margin-right: 5vw;
+  margin-bottom: 3vh;
+  font-family: Poppins;
+  font-size: 18px;
+}
+.bookcard-top {
+  padding: 1vh;
+  width: 100%;
+  background: linear-gradient(270deg, #71ddb1 -9.55%, #1a4fba 50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 1.5vh 1.5vh 0vh 0vh;
+  color: rgb(255, 255, 255);
+}
+.book-date {
+  padding-right: 5vh;
+}
+
+.doc-booking-buttons {
+  display: flex;
+  justify-content: space-around;
+  text-align: right;
+  margin-left: auto;
+}
+
+.book-accept {
+  background-color: rgb(58, 215, 129);
+  padding: 1vh;
+  border-radius: 0.75vh;
+  margin-right: 2vw;
+}
+.book-accept:hover {
+  background-color: rgb(142, 241, 157);
+  color: rgb(0, 171, 34);
+}
+
+.book-cancel {
+  background-color: rgb(215, 58, 58);
+  padding: 1vh;
+  border-radius: 0.75vh;
+}
+.book-cancel:hover {
+  background-color: rgb(241, 142, 142);
+  color: rgb(200, 0, 0);
+}
+
+.bookcard-bottom {
+    display: flex;
+    align-items: center;
+  padding: 1vh;
+  padding-left: 2vh;
+  padding-bottom: 2vh;
+  padding-top: 2vh;
+  width: 100%;
+  background-color: white;
+  border-radius: 0vh 0vh 1.5vh 1.5vh;
+}
+
+.doc-bookcard-details{
+    margin-left: 3vh;
+    font-size: 2vh;
+    color: rgb(91, 91, 91);
+}
+
+@media (max-width: 800px) {
+    .bookcard-top{
+        font-size: 2.5vw;
+    }
+}
