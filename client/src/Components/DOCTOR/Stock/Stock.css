@@ -1,0 +1,62 @@
+.stock-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.stocks-content{
+    margin-top: 10vh;
+    width: 100%;
+    padding-left: 15vw;
+}
+
+.search-bar{
+    text-align: center;
+}
+
+.stocks-search-input{
+    border: none;
+    margin: 2vh;
+    padding: 1vh;
+    width: 60%;
+    background-color: #8addca;
+    border-radius: 1vh;
+    color: rgb(58, 58, 58);
+    font-size: 20px;
+}
+.stocks-search-input:focus{
+    outline: none;
+}
+.search-bar input::placeholder {
+    color: #616161; /* Change this color to your preferred color */
+  }
+.search-button{
+    padding: 0.9vh;
+    border: none;
+    background: rgb(96, 96, 255);
+    border-radius: 0.5vh;
+    color: white;
+    font-size: 20px;
+}
+
+.search-button:hover{
+    background: rgb(11, 11, 145);
+}
+
+.stock-header{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 2vw;
+    color: rgb(61, 61, 61);
+    padding-bottom: 2vh;
+}
+@media (max-width: 800px) {
+    .stock-header{
+        font-size: 5vw;
+    }
+    .stocks-content{
+        padding: 0;
+    }
+}

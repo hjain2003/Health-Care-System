@@ -1,0 +1,134 @@
+.container {
+  z-index: 1000;
+  padding-top: 4vh;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding-left: 2vw;
+  height: 96vh;
+  width: 15vw;
+  box-shadow: 2px 0px 40px 1px rgba(192, 192, 192, 0.8);
+  font-size: 1.25vw;
+  position: fixed; 
+}
+
+
+.heading {
+  color: #402ACC;
+  font-weight: bold;
+  font-size: 1.75vw;
+  z-index:1000;
+  margin-top: 20px;
+}
+
+.nel {
+  padding: 0.5vh;
+  margin: 0.5vh;
+  margin-right: 1.5vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 1vh;
+  width: 80%;
+  color: black;
+  cursor: pointer;
+  text-decoration: none!important;
+}
+.nel:hover {
+  background-color: #402ACC;
+  color: white;
+}
+.menu a{
+  text-decoration: none;
+  color: black;
+}
+.menu a:hover{
+  color: white;
+}
+
+.sign {
+  padding: 1vh;
+  size-adjust: none;
+}
+
+.hamm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.uwu{
+  width: 100%;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+@media (max-width:390px){
+  .container{
+    margin-top: -35px;
+  }
+}
+@media (max-width: 800px) {
+  .container {
+    position: fixed;
+    top: 0;
+    font-size: 2.6vw;
+    background-color: #65656500;
+    box-shadow: none;
+    width: 30vw;
+    padding-left: 0vh;
+    margin-right: 0vh;
+    margin-top: -3vh;
+    height: 100vh;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #ffffffdd;
+    height: calc(100% - 3.2vh); /* Adjust height to account for heading */
+    position: absolute;
+    top: 3.2vh; /* Offset for heading */
+    left: -100%;
+    transition: left 0.3s ease-in-out;
+    z-index: 1;
+    width: 100%;
+  }
+
+  #top-menu-item{
+    margin-top: 70px;
+  }
+
+  .show {
+    left: 0;
+  }
+
+  .heading{
+    margin-top: 20px;
+    font-size: 2.8vh;
+  }
+  .hamburger {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 3vw;
+    height: 3vw;
+    padding-right: 2vh;
+    padding-left: 2vh;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .line {
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+  }
+
+  .active {
+    background-color: #000;
+  }
+}
