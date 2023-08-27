@@ -10,7 +10,9 @@
 .register_box {
     height: 500px;
     width: 350px;
-    padding: 20px;
+    padding: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
     display: flex;
     flex-direction: column;
     background: linear-gradient(270deg, #71DDB1 -9.55%, #1A4FBA 50%);
@@ -69,6 +71,6 @@
 
 @media(max-width:415px){
     .register_box{
-        width: 300px;
+        width: 250px;
     }
 }
