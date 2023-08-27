@@ -29,6 +29,7 @@
 .book-cancel:hover{
     background-color: rgb(241, 142, 142);
     color: rgb(200, 0, 0);
+    cursor: pointer;
 }
 
 .bookcard-bottom{

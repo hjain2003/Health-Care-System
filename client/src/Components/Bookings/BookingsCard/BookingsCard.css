@@ -7,7 +7,7 @@
 }
 .bookcard-top{
     padding: 1vh;
-    width: 100%;
+    width: 100.5%;
     background: linear-gradient(270deg, #71DDB1 -9.55%, #1A4FBA 50%);
     display: flex;
     flex-direction: row;
@@ -29,13 +29,14 @@
 .book-cancel:hover{
     background-color: rgb(241, 142, 142);
     color: rgb(200, 0, 0);
+    cursor: pointer;
 }
 
 .bookcard-bottom{
     padding: 1vh;
     padding-bottom: 2vh;
     padding-top: 2vh;
-    width: 100%;
     background-color: white;
     border-radius: 0vh 0vh 1.5vh 1.5vh;
 }
+

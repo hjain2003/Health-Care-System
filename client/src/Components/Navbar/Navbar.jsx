@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'; // Import NavLink
 import './Navbar.css';
 import { BsFillHouseFill, BsFillBookmarkStarFill, BsFillJournalBookmarkFill } from 'react-icons/bs';
 import { CgShutterstock } from 'react-icons/cg';
@@ -24,29 +24,29 @@ const Navbar = () => {
         </div>
       </div>
       <div className={`menu ${showMenu ? 'show' : ''}`}>
-        <Link to="/" className='uwu'>
-        <div className='nel' id="top-menu-item">
-              <BsFillHouseFill className='sign' />Dashboard
-            </div>
-        </Link>
+        <NavLink to="/" activeClassName="active" className='uwu'> 
+          <div className='nel' id="top-menu-item">
+            <BsFillHouseFill className='sign' />Dashboard
+          </div>
+        </NavLink>
 
-        <Link to="/booking" className='uwu'>
-        <div className='nel'>
-          <BsFillBookmarkStarFill className='sign' />Bookings
-        </div>
-        </Link>
+        <NavLink to="/booking" activeClassName="active" className='uwu'> 
+          <div className='nel'>
+            <BsFillBookmarkStarFill className='sign' />Bookings
+          </div>
+        </NavLink>
 
-        <Link to="/record" className='uwu'>
-        <div className='nel'>
-          <BsFillJournalBookmarkFill className='sign' />Past Records
-        </div>
-        </Link>
+        <NavLink to="/record" activeClassName="active" className='uwu'> 
+          <div className='nel'>
+            <BsFillJournalBookmarkFill className='sign' />Past Records
+          </div>
+        </NavLink>
 
-        <Link to="/stock" className='uwu'>
-        <div className='nel'>
-          <CgShutterstock className='sign' />Stocks
-        </div>
-        </Link>
+        <NavLink to="/stock" activeClassName="active" className='uwu'> 
+          <div className='nel'>
+            <CgShutterstock className='sign' />Stocks
+          </div>
+        </NavLink>
       </div>
     </div>
   );

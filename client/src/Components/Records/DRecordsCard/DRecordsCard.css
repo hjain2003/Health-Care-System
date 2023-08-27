@@ -39,3 +39,8 @@
     background-color: white;
     border-radius: 0vh 0vh 1.5vh 1.5vh;
 }
+
+
+.prescription-content:focus{
+    outline: none;
+}

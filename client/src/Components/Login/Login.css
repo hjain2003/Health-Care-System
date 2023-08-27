@@ -57,3 +57,7 @@
         width: 300px;
     }
 }
+
+.input-log:focus,.password_field:focus{
+    outline: none;
+}

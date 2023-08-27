@@ -40,6 +40,11 @@
   color: white!important;
 }
 
+.active .nel {
+  background-color: #402ACC;
+  color: white !important;
+}
+
 .sign {
   padding: 1vh;
   size-adjust: none;
@@ -118,10 +123,6 @@
   .line {
     width: 100%;
     height: 2px;
-    background-color: #000;
-  }
-
-  .active {
     background-color: #000;
   }
 }

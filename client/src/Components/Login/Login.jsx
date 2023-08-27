@@ -21,7 +21,7 @@ const Login = () => {
         <div className="login_box">
           <h2 align="center">LOGIN</h2>
           <label htmlFor="">Email ID</label>
-          <input type="text" placeholder='Enter Email-id' name="email" />
+          <input type="text" placeholder='Enter Email-id' name="email" className='input-log'/>
           <br />
           <label htmlFor="">Password</label>
           <div className="password-input">

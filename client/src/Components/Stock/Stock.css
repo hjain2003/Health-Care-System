@@ -6,7 +6,7 @@
 }
 
 .stocks-content{
-    margin-top: 10vh;
+    margin-top: 8vh;
     width: 100%;
     padding-left: 15vw;
 }
@@ -20,16 +20,16 @@
     margin: 2vh;
     padding: 1vh;
     width: 60%;
-    background-color: #8addca;
+    background-color: #716bdb;
     border-radius: 1vh;
-    color: rgb(58, 58, 58);
+    color: rgb(255, 255, 255);
     font-size: 20px;
 }
 .stocks-search-input:focus{
     outline: none;
 }
 .search-bar input::placeholder {
-    color: #616161; /* Change this color to your preferred color */
+    color: #d4d4d4; /* Change this color to your preferred color */
   }
 .search-button{
     padding: 0.9vh;
@@ -42,6 +42,7 @@
 
 .search-button:hover{
     background: rgb(11, 11, 145);
+    cursor: pointer;
 }
 
 .stock-header{

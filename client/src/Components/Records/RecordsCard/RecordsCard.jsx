@@ -1,25 +1,25 @@
-import React from 'react'
-import './RecordsCard.css'
+import React from 'react';
+import './RecordsCard.css';
 
-const RecordsCard = () => {
+const RecordsCard = ({ date, time, diagnosis }) => {
   return (
     <div className='bookcard_container'>
-     <div className='bookcard-top'>
-       <div className='book-date'>
-        Date: 12/08/23
-       </div>
-       <div className='book-time'>
-        Time: 2.33pm
-       </div>
-       <div className='book-cancel'>
-        Prescrption
-       </div>
-     </div>
-     <div className='bookcard-bottom'>
-      Diagnosis: IBS
-     </div>
+      <div className='bookcard-top'>
+        <div className='book-date'>
+          Date: {date}
+        </div>
+        <div className='book-time'>
+          Time: {time}
+        </div>
+        <div className='book-cancel'>
+          Prescription
+        </div>
+      </div>
+      <div className='bookcard-bottom'>
+        Diagnosis: {diagnosis}
+      </div>
     </div>
-  )
+  );
 }
 
-export default RecordsCard
+export default RecordsCard;
