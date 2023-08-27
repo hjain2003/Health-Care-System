@@ -43,20 +43,8 @@
     padding-right: 2vh ;
 }
 
-@media (max-width:800px) {
+@media (max-width: 800px) {
     .stockcard_container{
-        font-size: 2.25vw;
+        font-size: 2.5vw;
     }
-}
-.stockconf{
-    color: white;
-    margin-right: 0vh;
-}
-.stock-quant{
-    width: 100px;
-}
-.new{
-    display: flex;
-    align-items: center;
-    margin-left: 5vh;
 }

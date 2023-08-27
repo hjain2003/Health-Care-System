@@ -1,14 +1,14 @@
 import React from 'react'
 import './Dashboard.css';
-import DNavbar from '../Navbar/Navbar';
+import Navbar from '../Navbar/Navbar';
 
-const DDashboard = () => {
+const Dashboard = () => {
   return (
     <div className='dash-contain'>
-    <DNavbar/>
+    <Navbar/>
     <div className='header'> HELLO WORLD </div>
     </div>
   )
 }
 
-export default DDashboard
+export default Dashboard

@@ -1,10 +1,9 @@
 import React from 'react'
-import './BookingsCard.css'
+import './DRecordsCard.css'
 
-const DBookingsCard = () => {
+const DRecordsCard = () => {
   return (
     <div className='bookcard_container'>
-    
      <div className='bookcard-top'>
        <div className='book-date'>
         Date: 12/08/23
@@ -12,24 +11,18 @@ const DBookingsCard = () => {
        <div className='book-time'>
         Time: 2.33pm
        </div>
-       <div className='doc-booking-buttons'>
-        <div className='book-accept'>
-          Accept
-        </div>
-        <div className='book-cancel'>
-          Cancel
-        </div>
+       <div className='book-cancel'>
+        Prescrption
        </div>
-       
      </div>
      <div className='bookcard-bottom'>
       Harsh Jain
       <div className='doc-bookcard-details'>
-        Problem: Diarrhea
+        Diagnosis: Diarrhea
       </div>
      </div>
     </div>
   )
 }
 
-export default DBookingsCard
+export default DRecordsCard
