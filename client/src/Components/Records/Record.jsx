@@ -12,6 +12,14 @@ const Record = () => {
     <Navbar />
     <div className='records-content'>
       <div className='record-header'>PAST RECORDS</div>
+      {isDoctor && (
+        <>
+        <div className='search-bar'>
+          <input type='text' placeholder='Search names...' className='stocks-search-input' />
+          <button className='search-button'>Search</button>
+        </div>
+        </>
+      )}
       {!isDoctor && (
           <>
           <RecordsCard />

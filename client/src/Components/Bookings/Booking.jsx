@@ -12,6 +12,14 @@ const Booking = () => {
       <Navbar />
       <div className='bookings-content'>
         <div className='booking-header'>YOUR BOOKINGS</div>
+        {isDoctor && (
+        <>
+        <div className='search-bar'>
+          <input type='text' placeholder='Search names...' className='stocks-search-input' />
+          <button className='search-button'>Search</button>
+        </div>
+        </>
+      )}
         {!isDoctor && (
           <>
           <BookingsCard />
