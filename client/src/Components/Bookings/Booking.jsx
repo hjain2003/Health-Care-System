@@ -32,7 +32,7 @@ const Booking = () => {
       <Navbar />
       <div className='bookings-content'>
         <div className='booking-header'>YOUR BOOKINGS</div>
-        
+
         {isDoctor && (
           <div className='search-bar'>
             <input
@@ -45,7 +45,7 @@ const Booking = () => {
             <button className='search-button'>Search</button>
           </div>
         )}
-        
+
         {filteredBookings.map(booking => (
           isDoctor ? (
             <DBookingsCard key={booking.id} date={booking.date} time={booking.time} name={booking.name} problem={booking.problem} />
@@ -53,7 +53,7 @@ const Booking = () => {
             <BookingsCard key={booking.id} date={booking.date} time={booking.time} name={booking.name} problem={booking.problem} />
           )
         ))}
-        
+
       </div>
     </div>
   );
