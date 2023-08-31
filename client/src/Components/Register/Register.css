@@ -6,7 +6,17 @@
     align-items: center;
     justify-content: center;
 }
-
+nav{
+    height: 65px;
+    /* padding: 20px; */
+    width: 100%;
+    background-color: black;
+    color: white;
+    line-height: 65px;
+}
+nav h1{
+    margin-left: 20px;
+}
 .register_box {
     height: 500px;
     width: 350px;

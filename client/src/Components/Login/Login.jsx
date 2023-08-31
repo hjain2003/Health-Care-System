@@ -17,6 +17,9 @@ const Login = () => {
 
   return (
     <>
+      <nav>
+          <h1>Health Care Portal</h1>
+        </nav>
       <div className="full_page_login">
         <div className="login_box">
           <h2 align="center">LOGIN</h2>

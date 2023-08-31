@@ -5,11 +5,14 @@ import pkg from 'bcryptjs';
 const { hashSync } = pkg;
 
 export const signup = async (req, res) => {
-    const { name, email, password, phone, role} = req.body;
+    const { name, email, password, cpassword, phone, role} = req.body;
 
-    if (!name || !email || !password || !role || !phone) {
+    if (!name || !email || !password || !role || !phone || !cpassword) {
         return res.status(422).json({ error: "empty fields!" });
     }
+    if (password !== cpassword) {
+        return res.status(422).json({ error: "passkey and the confirm passkey fields do not match!" });
+      }
 
     try {
         const userExists = await User.findOne({ email : email });
@@ -18,7 +21,8 @@ export const signup = async (req, res) => {
         }
 
         const hashedPassword = pkg.hashSync(password);
-        const user = new User({ name, email, password: hashedPassword, phone, role});
+        const hashedCPassword = pkg.hashSync(cpassword);
+        const user = new User({ name, email, password: hashedPassword, cpassword: hashedCPassword, phone, role});
         const userRegister = await user.save();
 
         if (userRegister) {

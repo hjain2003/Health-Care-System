@@ -12,6 +12,9 @@ const userSchema = new mongoose.Schema({
     password :{
         type: String,
     },
+    cpassword :{
+        type: String
+    },
     phone:{
         type: String
     },

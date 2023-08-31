@@ -17,6 +17,9 @@ const Register = () => {
 
   return (
     <>
+        <nav>
+          <h1>Health Care Portal</h1>
+        </nav>
       <div className="full_page_register">
         <div className="register_box">
           <h2 align="center">REGISTER</h2>
