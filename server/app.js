@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./dbconn/conn.js";
 import userRouter from "./routes/user_routes.js";
@@ -15,6 +16,13 @@ dotenv.config({ path: './config.env' });
 connectDB();
 
 //middlewares
+app.use(cookieParser());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 app.use('/user',userRouter);
 app.use('/booking',bookingRouter);

@@ -7,7 +7,7 @@ const { hashSync } = pkg;
 export const signup = async (req, res) => {
     const { name, email, password, cpassword, phone, role} = req.body;
 
-    if (!name || !email || !password || !role || !phone || !cpassword) {
+    if (!name || !email || !password || !cpassword) {
         return res.status(422).json({ error: "empty fields!" });
     }
     if (password !== cpassword) {
@@ -22,7 +22,7 @@ export const signup = async (req, res) => {
 
         const hashedPassword = pkg.hashSync(password);
         const hashedCPassword = pkg.hashSync(cpassword);
-        const user = new User({ name, email, password: hashedPassword, cpassword: hashedCPassword, phone, role});
+        const user = new User({ name, email, password: hashedPassword, cpassword: hashedCPassword, phone, role : 'patient'});
         const userRegister = await user.save();
 
         if (userRegister) {

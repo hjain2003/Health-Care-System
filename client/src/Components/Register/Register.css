@@ -17,6 +17,25 @@ nav{
 nav h1{
     margin-left: 20px;
 }
+
+#registration_sucess{
+    background-color: lightgreen;
+    color: green;
+    padding: 10px;
+    font-weight: bold;
+    z-index: 100;
+}
+
+#navlogin{
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 7px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
 .register_box {
     height: 500px;
     width: 350px;
@@ -26,6 +45,7 @@ nav h1{
     background: linear-gradient(270deg, #71DDB1 -9.55%, #1A4FBA 50%);
     border-radius: 23px;
     color: white;
+    z-index: 50;
 }
 
 .register_box h2 {
@@ -80,5 +100,8 @@ nav h1{
 @media(max-width:415px){
     .register_box{
         width: 300px;
+    }
+    #registration_sucess{
+        position: absolute;
     }
 }
