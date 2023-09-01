@@ -5,7 +5,7 @@ import BookingsCard from './BookingsCard/BookingsCard';
 import DBookingsCard from './DBookingsCard/DBookingsCard';
 
 const Booking = () => {
-  const isDoctor = true;
+  const isDoctor = false;
 
   const bookingsData = [
     { id: 1, date: '12/08/23', time: '2.33pm', name: 'Harsh Jain', problem: 'Diarrhea' },
@@ -50,7 +50,7 @@ const Booking = () => {
           isDoctor ? (
             <DBookingsCard key={booking.id} date={booking.date} time={booking.time} name={booking.name} problem={booking.problem} />
           ) : (
-            <BookingsCard key={booking.id} date={booking.date} time={booking.time} name={booking.name} problem={booking.problem} />
+            <BookingsCard key={booking.id} date={booking.date} time={booking.time} problem={booking.problem} />
           )
         ))}
 
