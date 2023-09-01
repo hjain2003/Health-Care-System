@@ -13,6 +13,17 @@
   position: fixed; 
 }
 
+#logout_btn{
+  background-color: rgb(103, 103, 219);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
 
 .heading {
   color: #402ACC;
