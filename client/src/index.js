@@ -4,13 +4,16 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import { EditContextProvider } from './EditContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <EditContextProvider>
     <BrowserRouter>
     <App />
     </BrowserRouter>
+    </EditContextProvider>
   </React.StrictMode>
 );
 
