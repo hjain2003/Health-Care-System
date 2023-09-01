@@ -25,6 +25,7 @@ export const bookApp = async (req, res) => {
 
         await booking.save();
 
+        user.bookingCount+=1;
         user.bookings.push(booking._id);
         await user.save();
 
@@ -91,6 +92,9 @@ export const cancelBooking = async (req, res) => {
 
         // Delete the booking from the Booking collection
         await Booking.findByIdAndDelete(bookingId);
+
+        user.cancelledBookingCount += 1; // Increment the canceled appointment count
+        await user.save();
 
         return res.status(200).json({ message: 'Booking canceled successfully' });
     } catch (error) {

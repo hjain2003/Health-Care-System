@@ -2,12 +2,10 @@ import React, { useContext, useState } from 'react'
 import './Login.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { useEditContext } from '../../EditContext';
 
 const Login = () => {
   const navigate = useNavigate();
   const [loadingMsg, setLoadingMsg] = useState('LOGIN');
-  const {userData, setUserData} = useEditContext();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
@@ -57,9 +55,9 @@ const Login = () => {
         setLoadingMsg('LOGIN');
         window.alert('Login failed !');
       } else {
-        setUserData(data);
         setLoadingMsg('LOGIN');
         localStorage.setItem('jwtoken', data.token);
+        localStorage.setItem('role',data.role);
         navigate('/');
       }
     } catch (error) {

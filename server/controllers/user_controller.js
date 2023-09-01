@@ -22,7 +22,7 @@ export const signup = async (req, res) => {
 
         const hashedPassword = pkg.hashSync(password);
         const hashedCPassword = pkg.hashSync(cpassword);
-        const user = new User({ name, email, password: hashedPassword, cpassword: hashedCPassword, phone, role : 'patient'});
+        const user = new User({ name, email, password: hashedPassword, cpassword: hashedCPassword, phone, role : 'patient',bookingCount:0, cancelledBookingCount :0});
         const userRegister = await user.save();
 
         if (userRegister) {
@@ -111,6 +111,23 @@ export const resetPassword = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Internal server error." });
+    }
+};
+
+export const getBookingStatistics = async (req, res) => {
+    try {
+        const user = req.rootUser;
+
+        const bookingCount = user.bookingCount;
+        const canceledBookingCount = user.canceledBookingCount;
+
+        res.status(200).json({
+            bookingCount,
+            canceledBookingCount,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred' });
     }
 };
 

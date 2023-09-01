@@ -25,6 +25,14 @@ const userSchema = new mongoose.Schema({
         type : mongoose.Types.ObjectId,
         ref: "Booking"
     }],
+    bookingCount:{
+        type : Number,
+        default:0
+    },
+    cancelledBookingCount :{
+        type: Number,
+        default:0
+    },
     records:[{
         type : mongoose.Types.ObjectId,
         ref: "Record"
