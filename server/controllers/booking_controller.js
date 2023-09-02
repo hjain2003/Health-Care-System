@@ -1,5 +1,8 @@
 import Booking from "../models/Booking.js";
 import User from "../models/User.js";
+import nodemailer from "nodemailer"
+import dotenv from 'dotenv';
+dotenv.config({path:'./config.env'});
 
 export const bookApp = async (req, res) => {
     try {
@@ -17,7 +20,7 @@ export const bookApp = async (req, res) => {
         // Create a new booking
         const booking = new Booking({
             date,
-            time:'Not confirmed yet',
+            time: 'Not confirmed yet',
             remarks,
             bookedOrNot: 'No',
             user: user._id,
@@ -25,7 +28,7 @@ export const bookApp = async (req, res) => {
 
         await booking.save();
 
-        user.bookingCount+=1;
+        user.bookingCount += 1;
         user.bookings.push(booking._id);
         await user.save();
 
@@ -74,18 +77,46 @@ export const seeMyBookings = async (req, res) => {
 
 export const cancelBooking = async (req, res) => {
     try {
-        const user = req.rootUser; 
-        const bookingId = req.params.bookingId; 
+        const user = req.rootUser;
+        const bookingId = req.params.bookingId;
 
-        const booking = await Booking.findById(bookingId);
+        const booking = await Booking.findById(bookingId).populate('user', 'email');
 
         if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
 
-        if (booking.user.toString() !== user._id.toString()) {
-            return res.status(403).json({ message: 'You are not authorized to cancel this booking' });
+        const recipientEmail = booking.user.email;
+
+        if (!recipientEmail) {
+            return res.status(400).json({ message: 'Booking user email not found' });
         }
+
+        console.log('Booking user:', booking.user); // Check the user data
+        console.log('Booking user email:', booking.user.email);
+
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: 'harshjainn2003@gmail.com',
+                pass: process.env.EMAIL_PASS,
+            },
+        });
+
+        const mailOptions = {
+            from: 'harshjainn2003@gmail.com',
+            to: recipientEmail,
+            subject: 'Booking Cancellation',
+            text: `Your booking for ${booking.date} has been cancelled.`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+            } else {
+                console.log('Email sent:', info.response);
+            }
+        });
 
         // Remove the booking from the User schema's bookings array
         await User.updateOne({ _id: user._id }, { $pull: { bookings: bookingId } });
@@ -103,6 +134,7 @@ export const cancelBooking = async (req, res) => {
     }
 };
 
+
 export const confirmBooking = async (req, res) => {
     try {
         const bookingId = req.params.bookingId;
@@ -113,7 +145,7 @@ export const confirmBooking = async (req, res) => {
             return res.status(403).json({ error: "You are not authorized to book appointments" });
         }
 
-        if(!time){
+        if (!time) {
             return res.status(422).json({ error: "empty fields!" });
         }
 
@@ -123,8 +155,8 @@ export const confirmBooking = async (req, res) => {
             return res.status(404).json({ message: 'Booking not found' });
         }
 
-        booking.bookedOrNot = time; 
-        booking.time = time; 
+        booking.bookedOrNot = time;
+        booking.time = time;
         await booking.save();
 
         return res.status(200).json({ message: 'Booking confirmed successfully' });

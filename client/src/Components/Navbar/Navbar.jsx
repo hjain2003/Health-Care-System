@@ -30,6 +30,7 @@ const Navbar = () => {
         } else {
           navigate('/login');
           localStorage.removeItem('jwtoken');
+          localStorage.removeItem('role');
         }
       } catch (err) {
         console.log(err);
