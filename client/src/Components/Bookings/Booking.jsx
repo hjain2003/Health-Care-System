@@ -37,6 +37,7 @@ const Booking = () => {
         if (response.ok) {
           const data = await response.json();
           setBookingsData(data.bookings);
+          console.log(data.bookings);
         } else {
           console.error('Failed to fetch bookings data');
         }
@@ -48,6 +49,7 @@ const Booking = () => {
 
     fetchBookingsData();
   }, [isDoctor, navigate]);
+
 
   return (
     <div className='booking-container'>
@@ -76,7 +78,7 @@ const Booking = () => {
               id={booking._id}
               date={booking.date}
               time={booking.time}
-              user={booking.user[0]?.name}
+              user={booking.user}
               remarks={booking.remarks}
             />
           ) : (

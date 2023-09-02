@@ -41,22 +41,33 @@ export const bookApp = async (req, res) => {
 
 export const seeAllBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find().populate('user', 'name');
-        const user = req.rootUser;
-        if (user.role !== 'doctor') {
-            return res.status(403).json({ error: "You are not authorized to see all appointments" });
-        }
-
-        if (!bookings) {
-            return res.status(404).json({ message: 'No bookings found' });
-        }
-
-        return res.status(200).json({ bookings });
+      const bookings = await Booking.find().populate('user', 'name');
+      const user = req.rootUser;
+  
+      if (user.role !== 'doctor') {
+        return res.status(403).json({ error: "You are not authorized to see all appointments" });
+      }
+  
+      if (!bookings) {
+        return res.status(404).json({ message: 'No bookings found' });
+      }
+  
+      const bookingsWithUserName = bookings.map(booking => ({
+        _id: booking._id,
+        date: booking.date,
+        time: booking.time,
+        remarks: booking.remarks,
+        bookedOrNot: booking.bookedOrNot,
+        user: booking.user.name, // Populate the name of the user who booked the appointment
+      }));
+  
+      return res.status(200).json({ bookings: bookingsWithUserName });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'An error occurred' });
+      console.error(error);
+      return res.status(500).json({ error: 'An error occurred' });
     }
-};
+  };
+  
 
 export const seeMyBookings = async (req, res) => {
     try {
