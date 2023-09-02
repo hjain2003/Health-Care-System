@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import './DBookingsCard.css';
 
-const DBookingsCard = ({ date, time, name, problem }) => {
+const DBookingsCard = ({ date, time, user, remarks }) => {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
-  const [newDate, setNewDate] = useState(date); // Initialize with the existing date
-  const [newTime, setNewTime] = useState(time); // Initialize with the existing time
   const [isConfirmed, setIsConfirmed] = useState(false);
 
   const openPopUp = () => {
@@ -15,18 +13,7 @@ const DBookingsCard = ({ date, time, name, problem }) => {
     setIsPopUpOpen(false);
   };
 
-  const handleDateChange = (event) => {
-    setNewDate(event.target.value);
-  };
-
-  const handleTimeChange = (event) => {
-    setNewTime(event.target.value);
-  };
-
   const handleConfirm = () => {
-    // Update the date and time values with the new ones
-    setNewDate(newDate);
-    setNewTime(newTime);
 
     setIsConfirmed(true); // Set confirmation state to true
     closePopUp();
@@ -36,10 +23,10 @@ const DBookingsCard = ({ date, time, name, problem }) => {
     <div className='bookcard_container'>
       <div className='bookcard-top'>
         <div className='book-date'>
-          Date: {newDate} {/* Display the updated date */}
+          Date: {date} {/* Display the updated date */}
         </div>
         <div className='book-time'>
-          Time: {newTime} {/* Display the updated time */}
+          Time: {time} {/* Display the updated time */}
         </div>
         <div className='doc-booking-buttons'>
           {!isConfirmed ? (
@@ -59,9 +46,9 @@ const DBookingsCard = ({ date, time, name, problem }) => {
         </div>
       </div>
       <div className='bookcard-bottom'>
-        {name}
+        {user}
         <div className='doc-bookcard-details'>
-          Problem: {problem}
+          Problem: {remarks}
         </div>
       </div>
       
@@ -70,9 +57,9 @@ const DBookingsCard = ({ date, time, name, problem }) => {
           <div className='popup-content'>
             <div className='booking-heading'>CONFIRM BOOKING</div>
             Date:
-            <input type='date' value={newDate} onChange={handleDateChange} className='Date' />
+            <input type='date' className='Date' />
             Time:
-            <input type='time' value={newTime} onChange={handleTimeChange} className='time' />
+            <input type='time' className='time' />
             <button onClick={handleConfirm} className='confirm'>Confirm</button>
           </div>
         </div>

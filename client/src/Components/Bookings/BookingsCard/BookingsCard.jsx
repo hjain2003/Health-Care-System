@@ -1,7 +1,7 @@
 import React from 'react';
 import './BookingsCard.css';
 
-const BookingsCard = ({ date, time, problem }) => {
+const BookingsCard = ({ date, time, remarks }) => {
   return (
     <div className='bookcard_container'>
       <div className='bookcard-top'>
@@ -11,18 +11,18 @@ const BookingsCard = ({ date, time, problem }) => {
         <div className='book-time'>
           Time: {time}
         </div>
-        {/* <div className='doc-booking-buttons'>
-          <div className='book-accept'>
+        <div className='doc-booking-buttons'>
+          {/* <div className='book-accept'>
             Accept
-          </div>
+          </div> */}
           <div className='book-cancel'>
             Cancel
           </div>
-        </div> */}
+        </div>
       </div>
       <div className='bookcard-bottom'>
         <div className='doc-bookcard-details'>
-          Problem: {problem}
+          Problem: {remarks}
         </div>
       </div>
     </div>
