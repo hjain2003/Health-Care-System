@@ -36,8 +36,16 @@ const Booking = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setBookingsData(data.bookings);
-          console.log(data.bookings);
+          
+          // Filter out canceled appointments if it's the doctor's view
+          if (isDoctor) {
+            const doctorAppointments = data.bookings.filter(
+              (booking) => booking.canceledBy !== 'doctor'
+            );
+            setBookingsData(doctorAppointments);
+          } else {
+            setBookingsData(data.bookings);
+          }
         } else {
           console.error('Failed to fetch bookings data');
         }
@@ -49,7 +57,6 @@ const Booking = () => {
 
     fetchBookingsData();
   }, [isDoctor, navigate]);
-
 
   return (
     <div className='booking-container'>
@@ -71,26 +78,37 @@ const Booking = () => {
           </div>
         )}
 
-        {bookingsData.map((booking) =>
-          isDoctor ? (
-            <DBookingsCard
-              key={booking._id}
-              id={booking._id}
-              date={booking.date}
-              time={booking.time}
-              user={booking.user}
-              remarks={booking.remarks}
-            />
-          ) : (
-            <BookingsCard
-              key={booking._id}
-              id={booking._id}
-              date={booking.date}
-              time={booking.time}
-              remarks={booking.remarks}
-            />
-          )
-        )}
+        {bookingsData.map((booking) => {
+          if (isDoctor && booking.canceledBy === 'doctor') {
+            return (
+              <div key={booking._id} className="doctor-canceled-appointment">
+                This appointment has been canceled by the doctor.
+              </div>
+            );
+          } else if (!isDoctor && booking.canceledBy === 'patient') {
+            return null;
+          } else {
+            return isDoctor ? (
+              <DBookingsCard
+                key={booking._id}
+                bookingId={booking._id}
+                date={booking.date}
+                time={booking.time}
+                user={booking.user}
+                remarks={booking.remarks}
+              />
+            ) : (
+              <BookingsCard
+                key={booking._id}
+                bookingId={booking._id}
+                date={booking.date}
+                time={booking.time}
+                remarks={booking.remarks}
+              />
+            );
+          }
+        })}
+
       </div>
     </div>
   );

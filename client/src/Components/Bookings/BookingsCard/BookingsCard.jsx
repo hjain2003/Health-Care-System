@@ -1,9 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './BookingsCard.css';
 
-const BookingsCard = ({ date, time, remarks }) => {
+const BookingsCard = ({ date, time, remarks, bookingId }) => {
+  const [isCanceled, setIsCanceled] = useState(false);
+  const [cancelValue,setCancelValue] = useState('Cancel');
+
+  const handleCancel = async () => {
+    setCancelValue('...');
+    try {
+      const token = localStorage.getItem('jwtoken');
+
+      const response = await fetch(
+        `http://localhost:5000/booking/cancelBookingByPatient/${bookingId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: 'include',
+        }
+      );
+
+      if (response.ok) {
+        setCancelValue('Cancel');
+        window.location.reload();
+        setIsCanceled(true);
+      } else {
+        setCancelValue('Cancel');
+        console.error('Failed to cancel booking');
+      }
+    } catch (error) {
+      setCancelValue('Cancel');
+      console.error('An error occurred while canceling booking:', error);
+    }
+  };
+
   return (
-    <div className='bookcard_container'>
+    <div className={`bookcard_container ${isCanceled ? 'canceled' : ''}`}>
       <div className='bookcard-top'>
         <div className='book-date'>
           Date: {date}
@@ -12,12 +46,11 @@ const BookingsCard = ({ date, time, remarks }) => {
           Time: {time}
         </div>
         <div className='doc-booking-buttons'>
-          {/* <div className='book-accept'>
-            Accept
-          </div> */}
-          <div className='book-cancel'>
-            Cancel
-          </div>
+          {!isCanceled && (
+            <div className='book-cancel' onClick={handleCancel}>
+              {cancelValue}
+            </div>
+          )}
         </div>
       </div>
       <div className='bookcard-bottom'>
@@ -27,6 +60,6 @@ const BookingsCard = ({ date, time, remarks }) => {
       </div>
     </div>
   );
-}
+};
 
 export default BookingsCard;

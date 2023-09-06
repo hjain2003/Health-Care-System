@@ -17,6 +17,9 @@ const bookingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
+    canceledBy:{
+        type:String
+    }
 });
 
 export default model("Booking", bookingSchema);

@@ -40,19 +40,22 @@ export const bookApp = async (req, res) => {
 };
 
 export const seeAllBookings = async (req, res) => {
-    try {
-      const bookings = await Booking.find().populate('user', 'name');
-      const user = req.rootUser;
-  
-      if (user.role !== 'doctor') {
-        return res.status(403).json({ error: "You are not authorized to see all appointments" });
-      }
-  
-      if (!bookings) {
-        return res.status(404).json({ message: 'No bookings found' });
-      }
-  
-      const bookingsWithUserName = bookings.map(booking => ({
+  try {
+    const bookings = await Booking.find().populate('user', 'name');
+    const user = req.rootUser;
+
+    if (user.role !== 'doctor') {
+      return res.status(403).json({ error: "You are not authorized to see all appointments" });
+    }
+
+    if (!bookings) {
+      return res.status(404).json({ message: 'No bookings found' });
+    }
+
+    // Filter out appointments with time set as "Cancelled"
+    const bookingsWithUserName = bookings
+      .filter(booking => booking.time !== 'Cancelled')
+      .map(booking => ({
         _id: booking._id,
         date: booking.date,
         time: booking.time,
@@ -60,13 +63,13 @@ export const seeAllBookings = async (req, res) => {
         bookedOrNot: booking.bookedOrNot,
         user: booking.user.name, // Populate the name of the user who booked the appointment
       }));
-  
-      return res.status(200).json({ bookings: bookingsWithUserName });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'An error occurred' });
-    }
-  };
+
+    return res.status(200).json({ bookings: bookingsWithUserName });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'An error occurred' });
+  }
+};
   
 
 export const seeMyBookings = async (req, res) => {
@@ -86,63 +89,101 @@ export const seeMyBookings = async (req, res) => {
     }
 };
 
-export const cancelBooking = async (req, res) => {
+export const cancelBookingByPatient = async (req, res) => {
     try {
-        const user = req.rootUser;
-        const bookingId = req.params.bookingId;
+      const user = req.rootUser;
+      const bookingId = req.params.bookingId;
+  
+      // Find the booking by ID
+      const booking = await Booking.findById(bookingId);
+  
+      if (!booking) {
+        return res.status(404).json({ message: 'Booking not found' });
+      }
+  
+      // Check if the logged-in user is the owner of the booking
+      if (booking.user.toString() !== user._id.toString()) {
+        return res.status(403).json({ message: 'You are not authorized to delete this booking' });
+      }
+      
+      booking.canceledBy = 'patient';
 
-        const booking = await Booking.findById(bookingId).populate('user', 'email');
-
-        if (!booking) {
-            return res.status(404).json({ message: 'Booking not found' });
-        }
-
-        const recipientEmail = booking.user.email;
-
-        if (!recipientEmail) {
-            return res.status(400).json({ message: 'Booking user email not found' });
-        }
-
-        console.log('Booking user:', booking.user); // Check the user data
-        console.log('Booking user email:', booking.user.email);
-
-        const transporter = nodemailer.createTransport({
-            service: 'Gmail',
-            auth: {
-                user: 'harshjainn2003@gmail.com',
-                pass: process.env.EMAIL_PASS,
-            },
-        });
-
-        const mailOptions = {
-            from: 'harshjainn2003@gmail.com',
-            to: recipientEmail,
-            subject: 'Booking Cancellation',
-            text: `Your booking for ${booking.date} has been cancelled.`,
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error('Error sending email:', error);
-            } else {
-                console.log('Email sent:', info.response);
-            }
-        });
-
-        // Remove the booking from the User schema's bookings array
-        await User.updateOne({ _id: user._id }, { $pull: { bookings: bookingId } });
-
-        // Delete the booking from the Booking collection
-        await Booking.findByIdAndDelete(bookingId);
-
-        user.cancelledBookingCount += 1; // Increment the canceled appointment count
-        await user.save();
-
-        return res.status(200).json({ message: 'Booking canceled successfully' });
+      // Remove the booking from the User schema's bookings array
+      await User.updateOne({ _id: user._id }, { $pull: { bookings: bookingId } });
+      
+      await booking.save();
+      // Delete the booking from the Booking collection
+      await Booking.findByIdAndDelete(bookingId);
+  
+      // Increase the cancelled booking count
+      user.cancelledBookingCount += 1;
+      await user.save();
+  
+      return res.status(200).json({ message: 'Booking deleted by patient successfully' });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'An error occurred' });
+      console.error(error);
+      return res.status(500).json({ error: 'An error occurred' });
     }
+  };
+
+  
+export const cancelBookingByDoctor = async (req, res) => {
+  try {
+    const user = req.rootUser;
+    const bookingId = req.params.bookingId;
+
+    // Find the booking by ID and populate the user's email
+    const booking = await Booking.findById(bookingId).populate('user', 'email');
+
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    // Check if the logged-in user is a doctor and if the booking is not already canceled by the patient
+    if (user.role !== 'doctor' || booking.canceledBy === 'patient') {
+      return res.status(403).json({ message: 'You are not authorized to cancel this booking' });
+    }
+
+    // Set the canceledBy field to indicate it's canceled by the doctor
+    booking.canceledBy = 'doctor';
+    booking.time = 'Cancelled';
+    await booking.save();
+
+    // Send an email to the patient
+    const recipientEmail = booking.user.email;
+
+    if (!recipientEmail) {
+      return res.status(400).json({ message: 'Booking user email not found' });
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'harshjainn2003@gmail.com',
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: 'harshjainn2003@gmail.com',
+      to: recipientEmail,
+      subject: 'Booking Cancellation by Doctor',
+      text: `Your booking for ${booking.date} has been cancelled by the doctor.`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+
+    return res.status(200).json({ message: 'Booking canceled by doctor successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'An error occurred' });
+  }
 };
 
 

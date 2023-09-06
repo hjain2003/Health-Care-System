@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './DBookingsCard.css';
 
-const DBookingsCard = ({ date, time, user, remarks }) => {
+const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-
+  const [cancelText,setCancelText] = useState('Cancel');
   const openPopUp = () => {
     setIsPopUpOpen(true);
   };
@@ -13,14 +13,44 @@ const DBookingsCard = ({ date, time, user, remarks }) => {
     setIsPopUpOpen(false);
   };
 
-  const handleConfirm = () => {
+  const handleCancel = async () => {
+    setCancelText('...');
+    try {
+      const token = localStorage.getItem('jwtoken');
 
+      const response = await fetch(
+        `http://localhost:5000/booking/cancelBookingByDoctor/${bookingId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: 'include',
+        }
+      );
+
+      if (response.ok) {
+        setCancelText('Cancel');
+        window.location.reload();
+        setIsConfirmed(false); // Reset confirmation state
+      } else {
+        setCancelText('Cancel');
+        console.error('Failed to cancel booking');
+      }
+    } catch (error) {
+      setCancelText('Cancel');
+      console.error('An error occurred while canceling booking:', error);
+    }
+  };
+
+  const handleConfirm = () => {
     setIsConfirmed(true); // Set confirmation state to true
     closePopUp();
   };
 
   return (
-    <div className='bookcard_container'>
+    <div className={`bookcard_container ${isConfirmed ? 'canceled' : ''}`}>
       <div className='bookcard-top'>
         <div className='book-date'>
           Date: {date} {/* Display the updated date */}
@@ -34,14 +64,14 @@ const DBookingsCard = ({ date, time, user, remarks }) => {
               <div className='book-accept' onClick={openPopUp}>
                 Accept
               </div>
-              <div className='book-cancel'>
-                Cancel
+              <div className='book-cancel' onClick={handleCancel}>
+                {cancelText}
               </div>
             </>
           ) : (
             <div className='book-accept book-update' onClick={openPopUp}>
-                Update
-              </div>
+              Update
+            </div>
           )}
         </div>
       </div>
@@ -51,7 +81,7 @@ const DBookingsCard = ({ date, time, user, remarks }) => {
           Problem: {remarks}
         </div>
       </div>
-      
+
       {isPopUpOpen && (
         <div className='popup'>
           <div className='popup-content'>
@@ -66,6 +96,6 @@ const DBookingsCard = ({ date, time, user, remarks }) => {
       )}
     </div>
   );
-}
+};
 
 export default DBookingsCard;
