@@ -9,7 +9,7 @@ bookingRouter.get('/viewMyBookings',Authenticate, seeMyBookings);
 bookingRouter.get('/viewAllBookings',Authenticate, seeAllBookings);
 bookingRouter.delete('/cancelBookingByPatient/:bookingId',Authenticate,cancelBookingByPatient);
 bookingRouter.delete('/cancelBookingByDoctor/:bookingId',Authenticate,cancelBookingByDoctor);
-bookingRouter.put('/confirmBooking/:bookingId', Authenticate, confirmBooking);
+bookingRouter.post('/confirmBooking/:bookingId', Authenticate, confirmBooking);
 
 
 export default bookingRouter;

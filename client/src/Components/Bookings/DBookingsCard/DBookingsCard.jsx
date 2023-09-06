@@ -4,13 +4,49 @@ import './DBookingsCard.css';
 const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const [cancelText,setCancelText] = useState('Cancel');
+  const [cancelText, setCancelText] = useState('Cancel');
+  const [confirmationTime, setConfirmationTime] = useState('');
+
   const openPopUp = () => {
     setIsPopUpOpen(true);
   };
 
   const closePopUp = () => {
     setIsPopUpOpen(false);
+  };
+
+  const handleConfirm = async () => {
+    try {
+      const token = localStorage.getItem('jwtoken');
+
+      // Send a POST request with confirmation time only
+      const response = await fetch(
+        `http://localhost:5000/booking/confirmBooking/${bookingId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            time: confirmationTime, // Use confirmationTime
+          }),
+        }
+      );
+
+      if (response.ok) {
+        // Handle success (e.g., update UI)
+        setIsConfirmed(true);
+        closePopUp();
+        window.location.reload();
+      } else {
+        window.alert("Empty fields!!");
+        console.error('Failed to confirm booking');
+      }
+    } catch (error) {
+      console.error('An error occurred while confirming booking:', error);
+    }
   };
 
   const handleCancel = async () => {
@@ -42,11 +78,6 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
       setCancelText('Cancel');
       console.error('An error occurred while canceling booking:', error);
     }
-  };
-
-  const handleConfirm = () => {
-    setIsConfirmed(true); // Set confirmation state to true
-    closePopUp();
   };
 
   return (
@@ -86,10 +117,9 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
         <div className='popup'>
           <div className='popup-content'>
             <div className='booking-heading'>CONFIRM BOOKING</div>
-            Date:
-            <input type='date' className='Date' />
             Time:
-            <input type='time' className='time' />
+            <input type='time' className='time' value={confirmationTime}
+              onChange={(e) => setConfirmationTime(e.target.value)} />
             <button onClick={handleConfirm} className='confirm'>Confirm</button>
           </div>
         </div>
