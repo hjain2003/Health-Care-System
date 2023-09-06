@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './DBookingsCard.css';
 
 const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
@@ -6,6 +6,13 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [cancelText, setCancelText] = useState('Cancel');
   const [confirmationTime, setConfirmationTime] = useState('');
+
+  useEffect(() => {
+    // Check if the time is neither "Not confirmed yet" nor "Cancelled"
+    if (time !== "Not confirmed yet" && time !== "Cancelled") {
+      setIsConfirmed(true);
+    }
+  }, [time]);
 
   const openPopUp = () => {
     setIsPopUpOpen(true);
@@ -39,6 +46,8 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
         // Handle success (e.g., update UI)
         setIsConfirmed(true);
         closePopUp();
+        
+        // Reload the page to see the updated buttons
         window.location.reload();
       } else {
         window.alert("Empty fields!!");
@@ -68,7 +77,7 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
 
       if (response.ok) {
         setCancelText('Cancel');
-        window.location.reload();
+        window.location.reload(); // Reload the page after cancellation
         setIsConfirmed(false); // Reset confirmation state
       } else {
         setCancelText('Cancel');
@@ -90,7 +99,19 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
           Time: {time} {/* Display the updated time */}
         </div>
         <div className='doc-booking-buttons'>
-          {!isConfirmed ? (
+          {isConfirmed ? (
+            <>
+              <div className='book-accept book-update' onClick={openPopUp}>
+                Update
+              </div> &nbsp;&nbsp;&nbsp;
+              <div className='book-upload' onClick={() => console.log("Upload clicked")}>
+                Upload
+              </div>&nbsp;&nbsp;&nbsp;
+              <div className='book-cancel' onClick={handleCancel}>
+                {cancelText}
+              </div>
+            </>
+          ) : (
             <>
               <div className='book-accept' onClick={openPopUp}>
                 Accept
@@ -99,10 +120,6 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
                 {cancelText}
               </div>
             </>
-          ) : (
-            <div className='book-accept book-update' onClick={openPopUp}>
-              Update
-            </div>
           )}
         </div>
       </div>
@@ -118,8 +135,12 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
           <div className='popup-content'>
             <div className='booking-heading'>CONFIRM BOOKING</div>
             Time:
-            <input type='time' className='time' value={confirmationTime}
-              onChange={(e) => setConfirmationTime(e.target.value)} />
+            <input
+              type='time'
+              className='time'
+              value={confirmationTime}
+              onChange={(e) => setConfirmationTime(e.target.value)}
+            />
             <button onClick={handleConfirm} className='confirm'>Confirm</button>
           </div>
         </div>

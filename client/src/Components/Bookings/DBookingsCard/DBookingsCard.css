@@ -42,10 +42,21 @@
   padding: 1vh;
   border-radius: 0.75vh;
 }
+
 .book-cancel:hover {
   background-color: rgb(241, 142, 142);
   color: rgb(200, 0, 0);
   cursor: pointer;
+}
+
+.book-upload{
+  padding: 1vh;
+  border-radius: 0.75vh;
+  background-color: black;
+  cursor: pointer;
+}
+.book-upload:hover{
+  background-color: rgb(59, 53, 53);
 }
 
 .bookcard-bottom {
@@ -150,4 +161,4 @@
   text-decoration: bold;
 }
 
-/* Add additional styling for date and time inputs, button, etc. */
+
