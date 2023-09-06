@@ -187,6 +187,7 @@ export const cancelBookingByDoctor = async (req, res) => {
 };
 
 
+
 export const confirmBooking = async (req, res) => {
     try {
         const bookingId = req.params.bookingId;
@@ -201,7 +202,7 @@ export const confirmBooking = async (req, res) => {
             return res.status(422).json({ error: "empty fields!" });
         }
 
-        const booking = await Booking.findById(bookingId);
+        const booking = await Booking.findById(bookingId).populate('user','email');
 
         if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
@@ -211,12 +212,43 @@ export const confirmBooking = async (req, res) => {
         booking.time = time;
         await booking.save();
 
-        return res.status(200).json({ message: 'Booking confirmed successfully' });
+        const recipientEmail = booking.user.email;
+
+        if (!recipientEmail) {
+          return res.status(400).json({ message: 'Booking user email not found' });
+        }
+
+        // Send an email to the patient
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: 'harshjainn2003@gmail.com', 
+                pass: process.env.EMAIL_PASS, 
+            },
+        });
+
+        const mailOptions = {
+            from: 'harshjainn2003@gmail.com',
+            to: recipientEmail,
+            subject: 'Appointment Confirmation',
+            text: `Your appointment is confirmed for ${time} on ${booking.date}`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+                return res.status(500).json({ error: 'An error occurred while sending an email' });
+            } else {
+                console.log('Email sent:', info.response);
+                return res.status(200).json({ message: 'Booking confirmed successfully' });
+            }
+        });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'An error occurred' });
     }
 };
+
 
 // Import necessary modules and models at the top
 

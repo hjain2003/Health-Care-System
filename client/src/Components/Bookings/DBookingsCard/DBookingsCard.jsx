@@ -6,6 +6,7 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [cancelText, setCancelText] = useState('Cancel');
   const [confirmationTime, setConfirmationTime] = useState('');
+  const [confirmBtn,setconfirmBtn] = useState('Confirm');
 
   useEffect(() => {
     // Check if the time is neither "Not confirmed yet" nor "Cancelled"
@@ -23,6 +24,7 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
   };
 
   const handleConfirm = async () => {
+    setconfirmBtn('...');
     try {
       const token = localStorage.getItem('jwtoken');
 
@@ -43,6 +45,7 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
       );
 
       if (response.ok) {
+        setconfirmBtn('Confirm');
         // Handle success (e.g., update UI)
         setIsConfirmed(true);
         closePopUp();
@@ -50,10 +53,12 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
         // Reload the page to see the updated buttons
         window.location.reload();
       } else {
+        setconfirmBtn('Confirm');
         window.alert("Empty fields!!");
         console.error('Failed to confirm booking');
       }
     } catch (error) {
+      setconfirmBtn('Confirm');
       console.error('An error occurred while confirming booking:', error);
     }
   };
@@ -141,7 +146,7 @@ const DBookingsCard = ({ date, time, user, remarks, bookingId }) => {
               value={confirmationTime}
               onChange={(e) => setConfirmationTime(e.target.value)}
             />
-            <button onClick={handleConfirm} className='confirm'>Confirm</button>
+            <button onClick={handleConfirm} className='confirm'>{confirmBtn}</button>
           </div>
         </div>
       )}
