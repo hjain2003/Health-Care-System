@@ -21,6 +21,73 @@
     color: white;
     box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
+.booking_box{
+    height: 480px;
+    width: 500px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    border: 2px solid black;
+    border-radius: 20px;
+    background-color: rgba(104, 1, 107, 1);
+    background-color: black;
+    border: 2px solid white;
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+.booking_box input{
+    padding: 10px;
+}
+.booking_box textarea{
+    padding: 10px;
+    font-size: 15px;
+}
+.booking_box_btns{
+    display: flex;
+    flex-direction: row;
+}
+#confirm_booking,#cancel_booking{
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+}
+#confirm_booking{
+    background-color: green;
+}
+#cancel_booking{
+    background-color: red;
+}
+
+.booking_confirmation_box{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background-color: lightgreen;
+    color: green;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 10px;
+}
+#close_cmf_box{
+    background-color: green;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
 
 .dashboard_content {
     display: flex;

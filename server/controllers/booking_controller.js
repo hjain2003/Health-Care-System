@@ -9,7 +9,7 @@ export const bookApp = async (req, res) => {
         const { date, remarks } = req.body;
         const user = req.rootUser;
 
-        if (!date || !remarks) {
+        if (!date) {
             return res.status(422).json({ error: "empty fields!" });
         }
 
@@ -250,20 +250,16 @@ export const confirmBooking = async (req, res) => {
 };
 
 
-// Import necessary modules and models at the top
-
 export const checkBookingStatus = async (req, res) => {
   try {
     const bookingId = req.params.bookingId;
 
-    // Fetch the booking by ID
     const booking = await Booking.findById(bookingId);
 
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
     }
 
-    // Extract the bookedOrNot status from the booking
     const bookedOrNot = booking.bookedOrNot;
 
     return res.status(200).json({ bookedOrNot });
