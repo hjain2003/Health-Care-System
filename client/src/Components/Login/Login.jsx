@@ -57,6 +57,7 @@ const Login = () => {
       } else {
         setLoadingMsg('LOGIN');
         localStorage.setItem('jwtoken', data.token);
+        console.log(data.role);
         localStorage.setItem('role',data.role);
         navigate('/');
       }

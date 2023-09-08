@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom'; // Import NavLink
 import './Navbar.css';
 import { BsFillHouseFill, BsFillBookmarkStarFill, BsFillJournalBookmarkFill } from 'react-icons/bs';
@@ -6,10 +6,22 @@ import { CgShutterstock } from 'react-icons/cg';
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [isWorker, setIsWorker] = useState(false);
   const navigate = useNavigate();
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
+
+  const getRole = localStorage.getItem('role');
+
+  useEffect(() => {
+    if(getRole === 'worker'){
+      setIsWorker(true);
+    }
+    else{
+      setIsWorker(false);
+    }
+  }, []);
 
   const handleLogout = async () => {
     const result = window.confirm('Are you sure you want to logout?');
@@ -70,9 +82,9 @@ const Navbar = () => {
         </NavLink>
 
         <NavLink to="/stock" activeClassName="active" className='uwu'>
-          <div className='nel'>
+          {isWorker && (<div className='nel'>
             <CgShutterstock className='sign' />Stocks
-          </div>
+          </div>)}
         </NavLink>
       </div>
     </div>
