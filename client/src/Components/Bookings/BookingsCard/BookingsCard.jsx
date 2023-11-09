@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './BookingsCard.css';
 
-const BookingsCard = ({ date, time, remarks, bookingId }) => {
+const BookingsCard = ({ date, timeSlot, remarks, bookingId }) => {
   const [isCanceled, setIsCanceled] = useState(false);
   const [cancelValue,setCancelValue] = useState('Cancel');
 
@@ -43,7 +43,7 @@ const BookingsCard = ({ date, time, remarks, bookingId }) => {
           Date: {date}
         </div>
         <div className='book-time'>
-          Time: {time}
+          Time: {timeSlot}
         </div>
         <div className='doc-booking-buttons'>
           {!isCanceled && (

@@ -45,6 +45,52 @@
     cursor: pointer;
 }
 
+#add_medicine{
+    padding: 0.9vh;
+    font-size: 20px;
+    border: none;
+    background-color: lightgreen;
+    color: green;
+    cursor: pointer;
+    border-radius: 0.5vh;
+}
+
+.addMedicineContainer{
+    background-color: black;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 15px;
+    height: 380px;
+    width: 400px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+.addMedicineContainer input{
+    padding: 7px;
+}
+.buttons_add_medicine{
+    display: flex;
+    flex-direction: row;
+}
+#submit_medicine,#cancel_medicine{
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+}
+#submit_medicine{
+    background-color: green;
+}
+#cancel_medicine{
+    background-color: red;
+}
 .stock-header{
     text-align: center;
     align-items: center;

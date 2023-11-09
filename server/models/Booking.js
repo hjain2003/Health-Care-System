@@ -4,7 +4,7 @@ const bookingSchema = new mongoose.Schema({
     date: {
         type: String,
     },
-    time: {
+    timeSlot: {
         type: String,
     },
     remarks: {

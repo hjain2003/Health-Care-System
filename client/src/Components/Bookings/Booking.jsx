@@ -36,7 +36,7 @@ const Booking = () => {
 
         if (response.ok) {
           const data = await response.json();
-          
+
           // Filter out canceled appointments if it's the doctor's view
           if (isDoctor) {
             const doctorAppointments = data.bookings.filter(
@@ -80,20 +80,16 @@ const Booking = () => {
 
         {bookingsData.map((booking) => {
           if (isDoctor && booking.canceledBy === 'doctor') {
-            return (
-              <div key={booking._id} className="doctor-canceled-appointment">
-                This appointment has been canceled by the doctor.
-              </div>
-            );
+            return null; // Skip canceled appointments in the doctor's view
           } else if (!isDoctor && booking.canceledBy === 'patient') {
-            return null;
+            return null; // Skip canceled appointments in the patient's view
           } else {
             return isDoctor ? (
               <DBookingsCard
                 key={booking._id}
                 bookingId={booking._id}
                 date={booking.date}
-                time={booking.time}
+                timeSlot={booking.timeSlot}
                 user={booking.user}
                 remarks={booking.remarks}
               />
@@ -102,13 +98,12 @@ const Booking = () => {
                 key={booking._id}
                 bookingId={booking._id}
                 date={booking.date}
-                time={booking.time}
+                timeSlot={booking.timeSlot}
                 remarks={booking.remarks}
               />
             );
           }
         })}
-
       </div>
     </div>
   );

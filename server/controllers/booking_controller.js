@@ -5,39 +5,61 @@ import dotenv from 'dotenv';
 dotenv.config({path:'./config.env'});
 
 export const bookApp = async (req, res) => {
-    try {
-        const { date, remarks } = req.body;
-        const user = req.rootUser;
+  try {
+      const { date, timeSlot, remarks } = req.body;
+      const user = req.rootUser;
 
-        if (!date) {
-            return res.status(422).json({ error: "empty fields!" });
-        }
+      if (!date || !timeSlot) {
+          return res.status(422).json({ error: "Please select a date and time slot" });
+      }
 
-        if (user.role !== 'patient') {
-            return res.status(403).json({ error: "You are not authorized to book appointments" });
-        }
+      if (user.role !== 'patient') {
+          return res.status(403).json({ error: "You are not authorized to book appointments" });
+      }
 
-        // Create a new booking
-        const booking = new Booking({
-            date,
-            time: 'Not confirmed yet',
-            remarks,
-            bookedOrNot: 'No',
-            user: user._id,
-        });
+      // Check if the user already has a confirmed appointment
+      const existingAppointment = await Booking.findOne({
+          user: user._id,
+          bookedOrNot: 'Yes',
+      });
 
-        await booking.save();
+      if (existingAppointment) {
+          return res.status(400).json({ error: "You already have a confirmed appointment" });
+      }
 
-        user.bookingCount += 1;
-        user.bookings.push(booking._id);
-        await user.save();
+      // Check if there are already two bookings for the same date and time slot
+      const existingBookings = await Booking.find({
+          date,
+          timeSlot,
+          bookedOrNot: 'Yes',
+      });
 
-        return res.status(201).json({ message: 'Appointment booked successfully' });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'An error occurred' });
-    }
+      if (existingBookings.length >= 2) {
+          return res.status(400).json({ error: "This time slot is already fully booked" });
+      }
+
+      // Create a new booking
+      const booking = new Booking({
+          date,
+          timeSlot,
+          remarks,
+          bookedOrNot: 'Yes',
+          user: user._id,
+      });
+
+      await booking.save();
+
+      user.bookingCount += 1;
+      user.bookings.push(booking._id);
+      await user.save();
+
+      return res.status(201).json({ message: 'Appointment booked successfully' });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'An error occurred' });
+  }
 };
+
 
 export const seeAllBookings = async (req, res) => {
   try {
@@ -58,7 +80,7 @@ export const seeAllBookings = async (req, res) => {
       .map(booking => ({
         _id: booking._id,
         date: booking.date,
-        time: booking.time,
+        timeSlot: booking.timeSlot,
         remarks: booking.remarks,
         bookedOrNot: booking.bookedOrNot,
         user: booking.user.name, // Populate the name of the user who booked the appointment
@@ -93,29 +115,25 @@ export const cancelBookingByPatient = async (req, res) => {
     try {
       const user = req.rootUser;
       const bookingId = req.params.bookingId;
-  
-      // Find the booking by ID
+
       const booking = await Booking.findById(bookingId);
   
       if (!booking) {
         return res.status(404).json({ message: 'Booking not found' });
       }
   
-      // Check if the logged-in user is the owner of the booking
       if (booking.user.toString() !== user._id.toString()) {
         return res.status(403).json({ message: 'You are not authorized to delete this booking' });
       }
       
       booking.canceledBy = 'patient';
 
-      // Remove the booking from the User schema's bookings array
       await User.updateOne({ _id: user._id }, { $pull: { bookings: bookingId } });
       
       await booking.save();
-      // Delete the booking from the Booking collection
+   
       await Booking.findByIdAndDelete(bookingId);
   
-      // Increase the cancelled booking count
       user.cancelledBookingCount += 1;
       await user.save();
   
@@ -132,24 +150,20 @@ export const cancelBookingByDoctor = async (req, res) => {
     const user = req.rootUser;
     const bookingId = req.params.bookingId;
 
-    // Find the booking by ID and populate the user's email
     const booking = await Booking.findById(bookingId).populate('user', 'email');
 
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
     }
 
-    // Check if the logged-in user is a doctor and if the booking is not already canceled by the patient
     if (user.role !== 'doctor' || booking.canceledBy === 'patient') {
       return res.status(403).json({ message: 'You are not authorized to cancel this booking' });
     }
 
-    // Set the canceledBy field to indicate it's canceled by the doctor
     booking.canceledBy = 'doctor';
-    booking.time = 'Cancelled';
+    booking.timeSlot = 'Cancelled';
     await booking.save();
 
-    // Send an email to the patient
     const recipientEmail = booking.user.email;
 
     if (!recipientEmail) {
@@ -188,83 +202,83 @@ export const cancelBookingByDoctor = async (req, res) => {
 
 
 
-export const confirmBooking = async (req, res) => {
-    try {
-        const bookingId = req.params.bookingId;
-        const { time } = req.body; // Time input from the doctor
-        const user = req.rootUser;
+// export const confirmBooking = async (req, res) => {
+//     try {
+//         const bookingId = req.params.bookingId;
+//         const { time } = req.body; // Time input from the doctor
+//         const user = req.rootUser;
 
-        if (user.role !== 'doctor') {
-            return res.status(403).json({ error: "You are not authorized to book appointments" });
-        }
+//         if (user.role !== 'doctor') {
+//             return res.status(403).json({ error: "You are not authorized to book appointments" });
+//         }
 
-        if (!time) {
-            return res.status(422).json({ error: "empty fields!" });
-        }
+//         if (!time) {
+//             return res.status(422).json({ error: "empty fields!" });
+//         }
 
-        const booking = await Booking.findById(bookingId).populate('user','email');
+//         const booking = await Booking.findById(bookingId).populate('user','email');
 
-        if (!booking) {
-            return res.status(404).json({ message: 'Booking not found' });
-        }
+//         if (!booking) {
+//             return res.status(404).json({ message: 'Booking not found' });
+//         }
 
-        booking.bookedOrNot = time;
-        booking.time = time;
-        await booking.save();
+//         booking.bookedOrNot = time;
+//         booking.time = time;
+//         await booking.save();
 
-        const recipientEmail = booking.user.email;
+//         const recipientEmail = booking.user.email;
 
-        if (!recipientEmail) {
-          return res.status(400).json({ message: 'Booking user email not found' });
-        }
+//         if (!recipientEmail) {
+//           return res.status(400).json({ message: 'Booking user email not found' });
+//         }
 
-        // Send an email to the patient
-        const transporter = nodemailer.createTransport({
-            service: 'Gmail',
-            auth: {
-                user: 'harshjainn2003@gmail.com', 
-                pass: process.env.EMAIL_PASS, 
-            },
-        });
+//         // Send an email to the patient
+//         const transporter = nodemailer.createTransport({
+//             service: 'Gmail',
+//             auth: {
+//                 user: 'harshjainn2003@gmail.com', 
+//                 pass: process.env.EMAIL_PASS, 
+//             },
+//         });
 
-        const mailOptions = {
-            from: 'harshjainn2003@gmail.com',
-            to: recipientEmail,
-            subject: 'Appointment Confirmation',
-            text: `Your appointment is confirmed for ${time} on ${booking.date}`,
-        };
+//         const mailOptions = {
+//             from: 'harshjainn2003@gmail.com',
+//             to: recipientEmail,
+//             subject: 'Appointment Confirmation',
+//             text: `Your appointment is confirmed for ${time} on ${booking.date}`,
+//         };
 
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error('Error sending email:', error);
-                return res.status(500).json({ error: 'An error occurred while sending an email' });
-            } else {
-                console.log('Email sent:', info.response);
-                return res.status(200).json({ message: 'Booking confirmed successfully' });
-            }
-        });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'An error occurred' });
-    }
-};
+//         transporter.sendMail(mailOptions, (error, info) => {
+//             if (error) {
+//                 console.error('Error sending email:', error);
+//                 return res.status(500).json({ error: 'An error occurred while sending an email' });
+//             } else {
+//                 console.log('Email sent:', info.response);
+//                 return res.status(200).json({ message: 'Booking confirmed successfully' });
+//             }
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ error: 'An error occurred' });
+//     }
+// };
 
 
-export const checkBookingStatus = async (req, res) => {
-  try {
-    const bookingId = req.params.bookingId;
+// export const checkBookingStatus = async (req, res) => {
+//   try {
+//     const bookingId = req.params.bookingId;
 
-    const booking = await Booking.findById(bookingId);
+//     const booking = await Booking.findById(bookingId);
 
-    if (!booking) {
-      return res.status(404).json({ message: 'Booking not found' });
-    }
+//     if (!booking) {
+//       return res.status(404).json({ message: 'Booking not found' });
+//     }
 
-    const bookedOrNot = booking.bookedOrNot;
+//     const bookedOrNot = booking.bookedOrNot;
 
-    return res.status(200).json({ bookedOrNot });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'An error occurred' });
-  }
-};
+//     return res.status(200).json({ bookedOrNot });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ error: 'An error occurred' });
+//   }
+// };
