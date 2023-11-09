@@ -101,19 +101,41 @@ const Dashboard = () => {
       {box &&
         (
           <div className='booking_box'>
-            <h1 align="center">BOOK AN APPOINTMENT</h1>
-            <br />
-            <label htmlFor="">Date : </label>
-            <input type="date" name="date" onChange={(e) => setDate(e.target.value)} />
-            <br />
-            <label htmlFor="">Remarks :</label>
-            <textarea type="text" name="remarks" rows={10} placeholder='Please mention your problem in brief' onChange={(e) => setRemarks(e.target.value)} />
-            <br />
-            <div className='booking_box_btns'>
-              <button id="confirm_booking" onClick={handleBooking}>{cfmBooking}</button> &nbsp;&nbsp;&nbsp;
-              <button id="cancel_booking" onClick={closeBookingBox}>Cancel</button>
-            </div>
+          <h1 align="center">BOOK AN APPOINTMENT</h1>
+          <br />
+
+          <label htmlFor="">Select a Slot: </label>
+          <select className='slot_dropdown'>
+            <option value="10:00 AM - 10:30 AM">10:00 AM - 10:30 AM</option>
+            <option value="10:30 AM - 11:00 AM">10:30 AM - 11:00 AM</option>
+            <option value="11:00 AM - 11:30 AM">11:00 AM - 11:30 AM</option>
+            <option value="11:30 AM - 12:00 PM">11:30 AM - 12:00 PM</option>
+            <option value="12:00 PM - 12:30 PM">12:00 PM - 12:30 PM</option>
+            <option value="12:30 PM - 1:00 PM">12:30 PM - 1:00 PM</option>
+            <option value="1:00 PM - 1:30 PM">1:00 PM - 1:30 PM</option>
+            <option value="1:30 PM - 2:00 PM">1:30 PM - 2:00 PM</option>
+            <option value="2:00 PM - 2:30 PM">2:00 PM - 2:30 PM</option>
+            <option value="2:30 PM - 3:00 PM">2:30 PM - 3:00 PM</option>
+            <option value="3:00 PM - 3:30 PM">3:00 PM - 3:30 PM</option>
+            <option value="3:30 PM - 4:00 PM">3:30 PM - 4:00 PM</option>
+            <option value="4:00 PM - 4:30 PM">4:00 PM - 4:30 PM</option>
+            <option value="4:30 PM - 5:00 PM">4:30 PM - 5:00 PM</option>
+          </select>
+
+          <br />
+
+          <label htmlFor="">Remarks:</label>
+          <textarea type="text" name="remarks" rows={20} placeholder='Please mention your problem in brief' onChange={(e) => setRemarks(e.target.value)} />
+
+          <br />
+
+          <div className='booking_box_btns'>
+            <button id="confirm_booking" onClick={handleBooking}>{cfmBooking}</button> &nbsp;&nbsp;&nbsp;
+            <button id="cancel_booking" onClick={closeBookingBox}>Cancel</button>
           </div>
+        </div>
+
+
         )
       }
       {doneMsg &&

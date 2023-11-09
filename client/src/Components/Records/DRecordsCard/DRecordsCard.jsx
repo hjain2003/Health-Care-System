@@ -56,8 +56,8 @@ const DRecordsCard = ({ date, time, diagnosis, name }) => {
               className='prescription-content'
             />
             <div className='popup-buttons'>
-              <button onClick={handlePrescriptionSubmit}>Submit</button>
-              <button onClick={closePrescriptionPopUp}>Cancel</button>
+              <button onClick={handlePrescriptionSubmit} className='sub'>Submit</button>
+              <button onClick={closePrescriptionPopUp} className='can'>Cancel</button>
             </div>
           </div>
         </div>

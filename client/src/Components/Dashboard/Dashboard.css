@@ -187,3 +187,67 @@
         font-size: 15px;
     }
 }
+
+
+.booking_box {
+    height: 480px;
+    width: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    border-radius: 20px;
+    background-color: rgba(104, 1, 107, 1);
+    background-color: rgb(4, 49, 73);
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .booking_box input {
+    padding: 10px;
+  }
+  
+  .booking_box textarea {
+    width: 60vh;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 1vh;
+    outline:none;
+  }
+  
+  .booking_box_btns {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  #confirm_booking,
+  #cancel_booking {
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  #confirm_booking {
+    background-color: green;
+  }
+  
+  #cancel_booking {
+    background-color: red;
+  }
+
+
+.slot_dropdown{
+    width: 90%;
+    padding: 1vh;
+    border-radius: 1vh;
+    outline:none;
+}
+  
