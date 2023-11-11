@@ -9,7 +9,7 @@ export const bookApp = async (req, res) => {
       const { date, timeSlot, remarks } = req.body;
       const user = req.rootUser;
 
-      if (!date || !timeSlot) {
+      if (!date || !timeSlot || !remarks) {
           return res.status(422).json({ error: "Please select a date and time slot" });
       }
 
@@ -17,7 +17,6 @@ export const bookApp = async (req, res) => {
           return res.status(403).json({ error: "You are not authorized to book appointments" });
       }
 
-      // Check if the user already has a confirmed appointment
       const existingAppointment = await Booking.findOne({
           user: user._id,
           bookedOrNot: 'Yes',
@@ -27,7 +26,6 @@ export const bookApp = async (req, res) => {
           return res.status(400).json({ error: "You already have a confirmed appointment" });
       }
 
-      // Check if there are already two bookings for the same date and time slot
       const existingBookings = await Booking.find({
           date,
           timeSlot,
@@ -38,7 +36,6 @@ export const bookApp = async (req, res) => {
           return res.status(400).json({ error: "This time slot is already fully booked" });
       }
 
-      // Create a new booking
       const booking = new Booking({
           date,
           timeSlot,
@@ -74,7 +71,6 @@ export const seeAllBookings = async (req, res) => {
       return res.status(404).json({ message: 'No bookings found' });
     }
 
-    // Filter out appointments with time set as "Cancelled"
     const bookingsWithUserName = bookings
       .filter(booking => booking.time !== 'Cancelled')
       .map(booking => ({
@@ -83,7 +79,7 @@ export const seeAllBookings = async (req, res) => {
         timeSlot: booking.timeSlot,
         remarks: booking.remarks,
         bookedOrNot: booking.bookedOrNot,
-        user: booking.user.name, // Populate the name of the user who booked the appointment
+        user: booking.user.name,
       }));
 
     return res.status(200).json({ bookings: bookingsWithUserName });

@@ -12,10 +12,10 @@ const recordSchema = new mongoose.Schema({
     prescription :{
         type: String,
     },
-    user:[{
-        type : mongoose.Types.ObjectId,
-        ref: "User"
-    }],
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+      },
 });
   
 

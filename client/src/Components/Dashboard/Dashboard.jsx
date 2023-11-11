@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [userData, setUserData] = useState('');
   const [box, setBox] = useState(false);
   const [date, setDate] = useState('');
+  const [timeSlot, setTimeSlot] = useState('10:00 AM - 10:30 AM');
   const [remarks, setRemarks] = useState('');
   const [cfmBooking, setcmfBooking] = useState('Confirm'); 
   const [doneMsg, setdoneMsg] = useState(false); //success box
@@ -47,6 +48,7 @@ const Dashboard = () => {
   const handleBooking = async () => {
     setcmfBooking('...');
     try {
+
       const response = await fetch('http://localhost:5000/booking/book', {
         method: 'POST',
         headers: {
@@ -56,10 +58,16 @@ const Dashboard = () => {
         credentials: 'include',
         body: JSON.stringify({
           date,
+          timeSlot,
           remarks,
         }),
       });
 
+      if (response.status === 422) {
+        window.alert('Please fill in all the fields.');
+        setcmfBooking('Confirm');
+      }
+      
       if (response.ok) {
         setcmfBooking('Confirm');
         setBox(false);
@@ -67,7 +75,11 @@ const Dashboard = () => {
         setdoneMsg(true);
       } else {
         setcmfBooking('Confirm');
-        window.alert('Empty fields!!');
+        if (response.status === 400) {
+          window.alert('This time slot is already booked or fully booked.');
+        } else {
+          window.alert('Failed to book appointment. Please try again.');
+        }
         console.error('Failed to book appointment');
       }
     } catch (error) {
@@ -104,8 +116,12 @@ const Dashboard = () => {
           <h1 align="center">BOOK AN APPOINTMENT</h1>
           <br />
 
+          <label htmlFor="">Date : </label>
+          <input type="date"  onChange={(e) => setDate(e.target.value)} />
+          <br />
+
           <label htmlFor="">Select a Slot: </label>
-          <select className='slot_dropdown'>
+          <select className='slot_dropdown' onChange={(e) => setTimeSlot(e.target.value)}>
             <option value="10:00 AM - 10:30 AM">10:00 AM - 10:30 AM</option>
             <option value="10:30 AM - 11:00 AM">10:30 AM - 11:00 AM</option>
             <option value="11:00 AM - 11:30 AM">11:00 AM - 11:30 AM</option>

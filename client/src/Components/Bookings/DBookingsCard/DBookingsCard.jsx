@@ -49,6 +49,7 @@ const DBookingsCard = ({ date, timeSlot, user, remarks, bookingId }) => {
           <div className='book-upload' onClick={() => console.log("Upload clicked")}>
             Upload
           </div>
+          &nbsp;&nbsp;
           <div className='book-cancel' onClick={handleCancel}>
             {cancelText}
           </div>

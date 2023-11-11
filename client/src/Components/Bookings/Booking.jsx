@@ -37,7 +37,6 @@ const Booking = () => {
         if (response.ok) {
           const data = await response.json();
 
-          // Filter out canceled appointments if it's the doctor's view
           if (isDoctor) {
             const doctorAppointments = data.bookings.filter(
               (booking) => booking.canceledBy !== 'doctor'
