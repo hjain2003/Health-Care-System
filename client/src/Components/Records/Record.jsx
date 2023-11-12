@@ -1,20 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Record.css';
 import Navbar from '../Navbar/Navbar';
 import RecordsCard from './RecordsCard/RecordsCard';
 import DRecordsCard from './DRecordsCard/DRecordsCard';
 
 const Record = () => {
-  const isDoctor = true; // Set this to true if the user is a doctor, otherwise set it to false
-
-  const records = [
-    { id: 1, date: '12/08/23', time: '2.33pm', diagnosis: 'IBS', name: 'Patient Name' },
-    { id: 2, date: '12/08/23', time: '2.33pm', diagnosis: 'Diarrhea', name: 'Harsh Jain' },
-    // ...add more records as needed
-  ];
-
+  const [isDoctor, setIsDoctor] = useState(false);
+  const [records, setRecords] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredRecords, setFilteredRecords] = useState(records);
+  const [filteredRecords, setFilteredRecords] = useState([]);
+
+  useEffect(() => {
+    // Check user role from localStorage
+    const userRole = localStorage.getItem('role');
+    setIsDoctor(userRole === 'doctor');
+
+    // Fetch records based on user role
+    const fetchRecords = async () => {
+      try {
+        const token = localStorage.getItem('jwtoken');
+        const response = await fetch(
+          isDoctor
+            ? 'http://localhost:5000/record/viewAllRecords'
+            : 'http://localhost:5000/record/viewMyRecords',
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: 'include',
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setRecords(data.records);
+        } else {
+          console.error('Failed to fetch records data');
+        }
+      } catch (error) {
+        console.error('An error occurred while fetching records data:', error);
+      }
+    };
+
+    fetchRecords();
+  }, [isDoctor]);
 
   const handleSearchChange = (event) => {
     const searchValue = event.target.value.toLowerCase();
@@ -47,9 +78,9 @@ const Record = () => {
         
         {filteredRecords.map(record => (
           isDoctor ? (
-            <DRecordsCard key={record.id} date={record.date} time={record.time} diagnosis={record.diagnosis} name={record.name} />
+            <DRecordsCard key={record._id} date={record.date} disease={record.disease} name={record.user.name} prescription={record.prescription} />
           ) : (
-            <RecordsCard key={record.id} date={record.date} time={record.time} diagnosis={record.diagnosis} />
+            <RecordsCard key={record._id} date={record.date} disease={record.disease} />
           )
         ))}
       </div>

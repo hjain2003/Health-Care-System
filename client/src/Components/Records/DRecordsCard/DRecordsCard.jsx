@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './DRecordsCard.css';
 
-const DRecordsCard = ({ date, time, diagnosis, name }) => {
+const DRecordsCard = ({ date, disease, name }) => {
   const [isPrescriptionPopUpOpen, setIsPrescriptionPopUpOpen] = useState(false);
   const [prescription, setPrescription] = useState('');
 
@@ -31,9 +31,9 @@ const DRecordsCard = ({ date, time, diagnosis, name }) => {
         <div className='book-date'>
           Date: {date}
         </div>
-        <div className='book-time'>
+        {/* <div className='book-time'>
           Time: {time}
-        </div>
+        </div> */}
         <div className='book-cancel' onClick={openPrescriptionPopUp}>
           Prescription
         </div>
@@ -41,7 +41,7 @@ const DRecordsCard = ({ date, time, diagnosis, name }) => {
       <div className='bookcard-bottom'>
         {name}
         <div className='doc-bookcard-details'>
-          Diagnosis: {diagnosis}
+          Diagnosis: {disease}
         </div>
       </div>
 
@@ -51,7 +51,7 @@ const DRecordsCard = ({ date, time, diagnosis, name }) => {
             <h2>FILL PRESCRIPTION</h2>
             <textarea
               placeholder='Enter prescription details...'
-              value={prescription}
+              // value={prescription}
               onChange={handlePrescriptionChange}
               className='prescription-content'
             />
