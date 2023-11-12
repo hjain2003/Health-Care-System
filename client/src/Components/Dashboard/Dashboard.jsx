@@ -5,17 +5,37 @@ import yoga from '../../assets/yoga.svg'
 import { useEditContext } from '../../EditContext';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import ReqCard from './ReqCard/ReqCard';
 
 const Dashboard = () => {
 
   const navigate = useNavigate();
   const [userData, setUserData] = useState('');
   const [box, setBox] = useState(false);
+  const [boxreq, setBoxReq] = useState(false);
   const [date, setDate] = useState('');
   const [timeSlot, setTimeSlot] = useState('10:00 AM - 10:30 AM');
   const [remarks, setRemarks] = useState('');
   const [cfmBooking, setcmfBooking] = useState('Confirm'); 
   const [doneMsg, setdoneMsg] = useState(false); //success box
+
+  const [isDoctor, setIsDoctor] = useState(true);
+  const [isWorker, setIsWorker] = useState(false);
+
+  const getRole = localStorage.getItem('role');
+  useEffect(() => {
+    if(getRole === 'worker'){
+      setIsWorker(true);
+    }
+    else{
+      setIsWorker(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const userRole = localStorage.getItem('role');
+    setIsDoctor(userRole === 'doctor');
+  }, []);
 
   const token = localStorage.getItem('jwtoken');
 
@@ -101,6 +121,15 @@ const Dashboard = () => {
     }
   }
 
+  const openBoxReq = () => {
+    if (box === false) {
+      setBoxReq(true);
+    }
+    else {
+      setBoxReq(false);
+    }
+  }
+
   const closeBookingBox = () => {
     setBox(false);
   }
@@ -116,8 +145,9 @@ const Dashboard = () => {
           <h1 align="center">BOOK AN APPOINTMENT</h1>
           <br />
 
+          <div className='dating'>
           <label htmlFor="">Date : </label>
-          <input type="date"  onChange={(e) => setDate(e.target.value)} />
+          <input type="date"  onChange={(e) => setDate(e.target.value)} /></div>
           <br />
 
           <label htmlFor="">Select a Slot: </label>
@@ -154,6 +184,41 @@ const Dashboard = () => {
 
         )
       }
+
+      {boxreq &&
+        (
+          <div className='booking_box'>
+          <h1 align="center">REQUEST MEDICINE</h1>
+          <br />
+
+          <div className='dating'>
+          <label htmlFor="">Medicine Name : </label>
+          <input type="name"  onChange={(e) => setDate(e.target.value)} placeholder='Full Medicine Name' /></div>
+          <br />
+
+          <label htmlFor="">Why do you need it? </label>
+          <input type="name" onChange={(e) => setDate(e.target.value)} placeholder='Give proper reason' />
+          <br/>
+          <label htmlFor="">Amount needed </label>
+          <input type="name" onChange={(e) => setDate(e.target.value)} placeholder='Specify amount in number of tablets or ml' />
+
+
+          <br />
+
+          <label htmlFor="">Upload Prescription:</label>
+          <input type="file" />
+          <br />
+
+          <div className='booking_box_btns'>
+            <button id="confirm_booking" onClick={handleBooking}>{cfmBooking}</button> &nbsp;&nbsp;&nbsp;
+            <button id="cancel_booking" onClick={closeBookingBox}>Cancel</button>
+          </div>
+        </div>
+        )
+      }
+
+
+
       {doneMsg &&
         (
           <div className='booking_confirmation_box'>
@@ -171,16 +236,36 @@ const Dashboard = () => {
             <br />
             <span>Have a nice day and don't forget to take care of your health!</span>
             <br />
-            <button id="book_app" onClick={openBox}>Book an appointment</button>
+
+            <div className='banbut'>
+            {!isDoctor && !isWorker && (<button id="book_app" onClick={openBox}>Book an appointment</button>)}
+            {!isDoctor && !isWorker && (<button className='reqqq' onClick={openBoxReq}>Request medicine</button>)}
+            </div>
           </dic>
           <div className="img_container">
             <img src={yoga} alt="" />
           </div>
         </div>
-        <div className="card_container">
+
+        {!isWorker && (
+          <div className="card_container">
           <div className="dash_card"><span align="center">No. of visitations <br /><br />{userData.bookingCount}</span></div>
           <div className="dash_card"><span align="center">Cancellations <br /><br /> {userData.cancelledBookingCount}</span></div>
         </div>
+        )}
+
+        {isWorker && (
+          <div className='medReq'>
+          <div className='wrkReqHead'>MEDICINE REQUESTS</div>
+          <ReqCard />
+          <ReqCard />
+          <ReqCard />
+          <ReqCard />
+          <ReqCard />
+          </div>
+        )
+        }
+        
 
       </div>
     </>

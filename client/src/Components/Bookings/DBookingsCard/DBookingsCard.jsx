@@ -3,6 +3,8 @@ import './DBookingsCard.css';
 
 const DBookingsCard = ({ date, timeSlot, user, remarks, bookingId }) => {
   const [cancelText, setCancelText] = useState('Cancel');
+  const [isPrescriptionPopUpOpen, setIsPrescriptionPopUpOpen] = useState(false);
+  const [prescription, setPrescription] = useState('');
 
   const handleCancel = async () => {
     setCancelText('...');
@@ -36,6 +38,27 @@ const DBookingsCard = ({ date, timeSlot, user, remarks, bookingId }) => {
     }
   };
 
+
+  const openPrescriptionPopUp = () => {
+    setIsPrescriptionPopUpOpen(true);
+  };
+
+  const closePrescriptionPopUp = () => {
+    setIsPrescriptionPopUpOpen(false);
+  };
+
+  const handlePrescriptionChange = (event) => {
+    setPrescription(event.target.value);
+  };
+
+  const handlePrescriptionSubmit = () => {
+    // Here you can perform actions with the prescription data
+    console.log('Prescription submitted:', prescription);
+
+    // Close the pop-up after submission
+    closePrescriptionPopUp();
+  };
+
   return (
     <div className='bookcard_container'>
       <div className='bookcard-top'>
@@ -46,7 +69,7 @@ const DBookingsCard = ({ date, timeSlot, user, remarks, bookingId }) => {
           Time Slot: {timeSlot}
         </div>
         <div className='doc-booking-buttons'>
-          <div className='book-upload' onClick={() => console.log("Upload clicked")}>
+          <div className='book-upload' onClick={openPrescriptionPopUp}>
             Upload
           </div>
           &nbsp;&nbsp;
@@ -61,6 +84,24 @@ const DBookingsCard = ({ date, timeSlot, user, remarks, bookingId }) => {
           Problem: {remarks}
         </div>
       </div>
+
+      {isPrescriptionPopUpOpen && (
+        <div className='popup'>
+          <div className='popup-content'>
+            <h2>FILL PRESCRIPTION</h2>
+            <textarea
+              placeholder='Enter prescription details...'
+              value={prescription}
+              onChange={handlePrescriptionChange}
+              className='prescription-content'
+            />
+            <div className='popup-buttons'>
+              <button onClick={handlePrescriptionSubmit} className='sub'>Submit</button>
+              <button onClick={closePrescriptionPopUp} className='can'>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

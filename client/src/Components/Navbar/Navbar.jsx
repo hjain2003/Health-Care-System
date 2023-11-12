@@ -69,17 +69,19 @@ const Navbar = () => {
           </div>
         </NavLink>
 
-        <NavLink to="/booking" activeClassName="active" className='uwu'>
+        {!isWorker && (
+          <NavLink to="/booking" activeClassName="active" className='uwu'>
           <div className='nel'>
             <BsFillBookmarkStarFill className='sign' />Bookings
           </div>
         </NavLink>
+        )}
 
-        <NavLink to="/record" activeClassName="active" className='uwu'>
+        {!isWorker && (<NavLink to="/record" activeClassName="active" className='uwu'>
           <div className='nel'>
             <BsFillJournalBookmarkFill className='sign' />Past Records
           </div>
-        </NavLink>
+        </NavLink>)}
 
         <NavLink to="/stock" activeClassName="active" className='uwu'>
           {isWorker && (<div className='nel'>

@@ -88,7 +88,7 @@
     width: 30vw;
     padding-left: 0vh;
     margin-right: 0vh;
-    margin-top: -3vh;
+    margin-top: -4vh;
     height: 100vh;
   }
 
@@ -97,9 +97,9 @@
     flex-direction: column;
     align-items: flex-start;
     background-color: #ffffffdd;
-    height: calc(100% - 3.2vh); /* Adjust height to account for heading */
+    height: calc(100%); /* Adjust height to account for heading */
     position: absolute;
-    top: 3.2vh; /* Offset for heading */
+    padding-top: 6.2vh;
     left: -100%;
     transition: left 0.3s ease-in-out;
     z-index: 1;
