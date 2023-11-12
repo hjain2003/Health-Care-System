@@ -79,9 +79,9 @@ const Booking = () => {
 
         {bookingsData.map((booking) => {
           if (isDoctor && booking.canceledBy === 'doctor') {
-            return null; // Skip canceled appointments in the doctor's view
+            return null;
           } else if (!isDoctor && booking.canceledBy === 'patient') {
-            return null; // Skip canceled appointments in the patient's view
+            return null;
           } else {
             return isDoctor ? (
               <DBookingsCard

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import './DRecordsCard.css';
 
-const DRecordsCard = ({ date, time, diagnosis, name }) => {
+const DRecordsCard = ({ date, time, diagnosis, name, prescription }) => {
   const [isPrescriptionPopUpOpen, setIsPrescriptionPopUpOpen] = useState(false);
-  const [prescription, setPrescription] = useState('');
 
   const openPrescriptionPopUp = () => {
     setIsPrescriptionPopUpOpen(true);
@@ -11,18 +10,6 @@ const DRecordsCard = ({ date, time, diagnosis, name }) => {
 
   const closePrescriptionPopUp = () => {
     setIsPrescriptionPopUpOpen(false);
-  };
-
-  const handlePrescriptionChange = (event) => {
-    setPrescription(event.target.value);
-  };
-
-  const handlePrescriptionSubmit = () => {
-    // Here you can perform actions with the prescription data
-    console.log('Prescription submitted:', prescription);
-
-    // Close the pop-up after submission
-    closePrescriptionPopUp();
   };
 
   return (
@@ -48,16 +35,10 @@ const DRecordsCard = ({ date, time, diagnosis, name }) => {
       {isPrescriptionPopUpOpen && (
         <div className='popup'>
           <div className='popup-content'>
-            <h2>FILL PRESCRIPTION</h2>
-            <textarea
-              placeholder='Enter prescription details...'
-              value={prescription}
-              onChange={handlePrescriptionChange}
-              className='prescription-content'
-            />
+            <h2>PRESCRIPTION DETAILS</h2>
+            <p>{prescription}</p>
             <div className='popup-buttons'>
-              <button onClick={handlePrescriptionSubmit} className='sub'>Submit</button>
-              <button onClick={closePrescriptionPopUp} className='can'>Cancel</button>
+              <button onClick={closePrescriptionPopUp} className='can'>Close</button>
             </div>
           </div>
         </div>

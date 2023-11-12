@@ -48,20 +48,41 @@
 .booking_box_btns{
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 #confirm_booking,#cancel_booking{
     padding: 10px;
     cursor: pointer;
     color: white;
     font-size: 15px;
-    border: none;
+    border: solid;
+    border-width: 1px;
     border-radius: 5px;
+    width: 35vh;
 }
 #confirm_booking{
     background-color: green;
+    border-color:  green;
 }
+#confirm_booking:hover{
+    background-color: rgba(126, 16, 16, 0);
+    cursor: pointer;
+    color: rgb(0, 255, 0);
+    border: solid;
+    border-width: 1px;
+}
+
 #cancel_booking{
-    background-color: red;
+    background-color: rgb(126, 16, 16);
+    border-color:  rgb(126, 16, 16);
+}
+#cancel_booking:hover{
+    background-color: rgba(126, 16, 16, 0);
+    cursor: pointer;
+    color: rgb(255, 4, 4);
+    border: solid;
+    border-width: 1px;
 }
 
 .booking_confirmation_box{
@@ -89,6 +110,18 @@
     margin-top: 10px;
 }
 
+.dating{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dating input{
+    border-radius: 1vh;
+    padding: -1vh;
+    outline: none;
+}
+
 .dashboard_content {
     display: flex;
     flex-direction: column;
@@ -106,13 +139,33 @@
 
 #book_app {
     background-color: #71DDB1;
-    color: white;
-    padding: 10px;
+    color: rgb(255, 255, 255);
+    padding: 1.5vh;
     font-size: 18px;
     border-radius: 10px;
     border: none;
     cursor: pointer;
-    width: 230px;
+    width: 30vh;
+}
+
+#book_app:hover{
+    background-color: #458d70;
+    
+}
+
+.reqqq{
+    color: white;
+    padding: 1.5vh;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    width: 30vh;
+    background-color: rgb(173, 117, 230);
+}
+
+.reqqq:hover{
+    background-color: rgb(120, 78, 161);
 }
 
 .card_container {
@@ -204,8 +257,6 @@
     color: white;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
   }
   
   .booking_box input {
@@ -213,7 +264,7 @@
   }
   
   .booking_box textarea {
-    width: 60vh;
+    width: 96%;
     padding: 10px;
     font-size: 15px;
     border-radius: 1vh;
@@ -224,30 +275,39 @@
     display: flex;
     flex-direction: row;
   }
+
   
-  #confirm_booking,
-  #cancel_booking {
-    padding: 10px;
-    cursor: pointer;
-    color: white;
-    font-size: 15px;
-    border: none;
-    border-radius: 5px;
-  }
   
-  #confirm_booking {
-    background-color: green;
-  }
-  
-  #cancel_booking {
-    background-color: red;
-  }
 
 
 .slot_dropdown{
-    width: 90%;
+    width: 100%;
     padding: 1vh;
     border-radius: 1vh;
     outline:none;
 }
   
+.banbut{
+    justify-content: space-around;
+}
+
+.banbut button{
+    margin: 1vh;
+}
+
+.wrkReqHead{
+    text-align: center;
+    margin-top: 3vh;
+    font-size: 3vh;
+    margin-left: 30vh;
+}
+
+@media (max-width: 800px) {
+    .wrkReqHead{
+        margin-left: 0vh;
+    }
+}
+
+.medReq{
+    overflow-y: scroll;
+}

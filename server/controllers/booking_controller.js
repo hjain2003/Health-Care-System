@@ -58,6 +58,7 @@ export const bookApp = async (req, res) => {
 };
 
 
+
 export const seeAllBookings = async (req, res) => {
   try {
     const bookings = await Booking.find().populate('user', 'name');
