@@ -5,7 +5,6 @@ import yoga from '../../assets/yoga.svg'
 import { useEditContext } from '../../EditContext';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import ReqCard from './ReqCard/ReqCard';
 
 const Dashboard = () => {
 
@@ -20,17 +19,6 @@ const Dashboard = () => {
   const [doneMsg, setdoneMsg] = useState(false); //success box
 
   const [isDoctor, setIsDoctor] = useState(true);
-  const [isWorker, setIsWorker] = useState(false);
-
-  const getRole = localStorage.getItem('role');
-  useEffect(() => {
-    if(getRole === 'worker'){
-      setIsWorker(true);
-    }
-    else{
-      setIsWorker(false);
-    }
-  }, []);
 
   useEffect(() => {
     const userRole = localStorage.getItem('role');
@@ -185,7 +173,7 @@ const Dashboard = () => {
         )
       }
 
-      {boxreq &&
+      {/* {boxreq &&
         (
           <div className='booking_box'>
           <h1 align="center">REQUEST MEDICINE</h1>
@@ -215,7 +203,7 @@ const Dashboard = () => {
           </div>
         </div>
         )
-      }
+      } */}
 
 
 
@@ -238,34 +226,18 @@ const Dashboard = () => {
             <br />
 
             <div className='banbut'>
-            {!isDoctor && !isWorker && (<button id="book_app" onClick={openBox}>Book an appointment</button>)}
-            {!isDoctor && !isWorker && (<button className='reqqq' onClick={openBoxReq}>Request medicine</button>)}
+            {!isDoctor && (<button id="book_app" onClick={openBox}>Book an appointment</button>)}
+            {/* {!isDoctor && (<button className='reqqq' onClick={openBoxReq}>Request medicine</button>)} */}
             </div>
           </dic>
           <div className="img_container">
             <img src={yoga} alt="" />
           </div>
         </div>
-
-        {!isWorker && (
-          <div className="card_container">
+        <div className="card_container">
           <div className="dash_card"><span align="center">No. of visitations <br /><br />{userData.bookingCount}</span></div>
           <div className="dash_card"><span align="center">Cancellations <br /><br /> {userData.cancelledBookingCount}</span></div>
         </div>
-        )}
-
-        {isWorker && (
-          <div className='medReq'>
-          <div className='wrkReqHead'>MEDICINE REQUESTS</div>
-          <ReqCard />
-          <ReqCard />
-          <ReqCard />
-          <ReqCard />
-          <ReqCard />
-          </div>
-        )
-        }
-        
 
       </div>
     </>
