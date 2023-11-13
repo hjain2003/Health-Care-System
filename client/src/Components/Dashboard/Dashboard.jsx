@@ -230,15 +230,20 @@ const Dashboard = () => {
             {/* {!isDoctor && (<button className='reqqq' onClick={openBoxReq}>Request medicine</button>)} */}
             </div>
           </dic>
-          <div className="img_container">
+         {isDoctor && ( <div className="img_container">
             <img src={yoga} alt="" />
-          </div>
+          </div>)}
+    
+          {!isDoctor && ( <div className="img_container patimg">
+            <img src={yoga} alt="" />
+          </div>)}
         </div>
-        <div className="card_container">
+        {!isDoctor && (
+          <div className="card_container">
           <div className="dash_card"><span align="center">No. of visitations <br /><br />{userData.bookingCount}</span></div>
           <div className="dash_card"><span align="center">Cancellations <br /><br /> {userData.cancelledBookingCount}</span></div>
         </div>
-
+        )}
       </div>
     </>
   )
