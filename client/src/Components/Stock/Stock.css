@@ -107,3 +107,11 @@
         padding: 0;
     }
 }
+
+.no-results-message{
+    text-align: center;
+    font-weight: 800;
+    color: rgb(180, 18, 18);
+    font-size: 3vh;
+}
+

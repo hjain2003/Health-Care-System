@@ -5,6 +5,7 @@ import yoga from '../../assets/yoga.svg'
 import { useEditContext } from '../../EditContext';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import NewsList from './NEWS/NewsList/NewsList';
 
 const Dashboard = () => {
 
@@ -23,6 +24,17 @@ const Dashboard = () => {
   useEffect(() => {
     const userRole = localStorage.getItem('role');
     setIsDoctor(userRole === 'doctor');
+  }, []);
+
+  const [isWorker, setIsWorker] = useState(false);
+  const getRole = localStorage.getItem('role');
+  useEffect(() => {
+    if(getRole === 'worker'){
+      setIsWorker(true);
+    }
+    else{
+      setIsWorker(false);
+    }
   }, []);
 
   const token = localStorage.getItem('jwtoken');
@@ -226,7 +238,7 @@ const Dashboard = () => {
             <br />
 
             <div className='banbut'>
-            {!isDoctor && (<button id="book_app" onClick={openBox}>Book an appointment</button>)}
+            {!isDoctor && !isWorker && (<button id="book_app" onClick={openBox}>Book an appointment</button>)}
             {/* {!isDoctor && (<button className='reqqq' onClick={openBoxReq}>Request medicine</button>)} */}
             </div>
           </dic>
@@ -238,12 +250,25 @@ const Dashboard = () => {
             <img src={yoga} alt="" />
           </div>)}
         </div>
-        {!isDoctor && (
+        {!isDoctor && !isWorker && (
           <div className="card_container">
           <div className="dash_card"><span align="center">No. of visitations <br /><br />{userData.bookingCount}</span></div>
           <div className="dash_card"><span align="center">Cancellations <br /><br /> {userData.cancelledBookingCount}</span></div>
         </div>
         )}
+
+        {
+          (isDoctor || isWorker) && (
+            <div className='news-today'>NEWS TODAY</div>
+          )
+        }
+        {
+          (isDoctor || isWorker) && (
+            <div className='newss'>
+              <NewsList />
+            </div>
+          )
+        }
       </div>
     </>
   )

@@ -1,0 +1,30 @@
+.news-box{
+    height: fit-content;
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    padding: 3vh;
+    border-radius: 3vh;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+    margin: 4vh;
+}
+.news-img{
+    max-height: 30vh;
+    max-width: 30vh;
+    align-items: right;
+    justify-content: right;
+    left: auto;
+    margin: 2vh;
+}
+
+.news-content p{
+    font-size: 15px;
+}
+
+.news-content h3{
+    font-size: 19px;
+    color: brown;
+    text-decoration: none;
+    text-emphasis: none;
+}

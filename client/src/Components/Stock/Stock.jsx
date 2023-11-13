@@ -13,19 +13,19 @@ const Stock = () => {
     quantity: '',
   });
   const[savingText, setSavingText] = useState('Save');
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
-        // const token = localStorage.getItem('jwtoken');
+        setLoading(true);
         const response = await fetch(
-          'http://localhost:5000/stock/viewStock',
+          `http://localhost:5000/stock/viewStock?search=${searchTerm}`, // Include search parameter
           {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              // Authorization: `Bearer ${token}`,
             },
             credentials: 'include',
           }
@@ -39,11 +39,13 @@ const Stock = () => {
         }
       } catch (error) {
         console.error('An error occurred while fetching medicines data:', error);
+      }finally {
+        setLoading(false);
       }
     };
 
     fetchMedicines();
-  }, []);
+  }, [searchTerm]);
 
   const handleMedicineSave =async()=>{
     setSavingText('...');
@@ -91,7 +93,7 @@ const Stock = () => {
   };
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+      setSearchTerm(event.target.value);
   };
 
   const handleMedicineChange = (event) => {
@@ -100,6 +102,10 @@ const Stock = () => {
       [event.target.name]: event.target.value,
     });
   };
+
+  const filteredMedicines = medicines.filter(medicine =>
+    medicine.medicine.toLowerCase().includes(searchTerm.toLowerCase())
+  );  
 
   return (
     <div className='stock-container'>
@@ -137,9 +143,20 @@ const Stock = () => {
           <button id="add_medicine" onClick={addMedicine}>Add</button>
         </div>
 
-        {medicines.map(medicine => (
-          <StockCard key={medicine._id} medicid={medicine._id} medicineName={medicine.medicine} initialPrice={medicine.price} initialQuantity={medicine.quantity} />
-        ))}
+        {(filteredMedicines.length === 0 && !loading )? (
+        <div className="no-results-message">No results found...</div>
+      ) : (
+        filteredMedicines.map(medicine => (
+          <StockCard
+            key={medicine._id}
+            medicid={medicine._id}
+            medicineName={medicine.medicine}
+            initialPrice={medicine.price}
+            initialQuantity={medicine.quantity}
+          />
+        ))
+      )}
+      {loading && <div className="no-results-message">Loading...</div>}
       </div>
     </div>
   );

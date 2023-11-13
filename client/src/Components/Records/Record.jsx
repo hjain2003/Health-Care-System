@@ -6,6 +6,8 @@ import DRecordsCard from './DRecordsCard/DRecordsCard';
 const Record = () => {
   const [isDoctor, setIsDoctor] = useState(true);
   const [records, setRecords] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check user role from localStorage
@@ -15,6 +17,8 @@ const Record = () => {
     // Fetch records based on user role
     const fetchRecords = async () => {
       try {
+        setLoading(true);
+
         const token = localStorage.getItem('jwtoken');
         const response = await fetch(
           isDoctor
@@ -38,42 +42,55 @@ const Record = () => {
         }
       } catch (error) {
         console.error('An error occurred while fetching records data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchRecords();
   }, [isDoctor]);
 
+  const filteredRecords = isDoctor
+  ? records.filter((record) =>
+      record.user && record.user.name && record.user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  : records;
+
   return (
     <div className='record-container'>
       <Navbar />
       <div className='records-content'>
         <div className='record-header'>PAST RECORDS</div>
-        
-        {/* Static Search Bar */}
+
         {isDoctor && (
           <div className='search-bar'>
             <input
               type='text'
               placeholder='Search names...'
               className='stocks-search-input'
-              value='' 
-              // onChange={handleSearchChange}  // Remove onChange handler
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button className='search-button'>Search</button>
           </div>
         )}
-        
-        {records.map(record => (
-          isDoctor ? (
-            <DRecordsCard key={record._id} date={record.date} disease={record.disease} name={record.user.name} prescription={record.prescription} />
-          ) : (
-            <DRecordsCard key={record._id} date={record.date} disease={record.disease} prescription={record.prescription} />
+
+        {loading ? (
+          <div className="loading-message">Loading records...</div>
+        ) : filteredRecords.length === 0 ? (
+          <div className="no-results-message">No records found...</div>
+        ) : (
+          filteredRecords.map(record =>
+            isDoctor ? (
+              <DRecordsCard key={record._id} date={record.date} disease={record.disease} name={record.user.name} prescription={record.prescription} />
+            ) : (
+              <DRecordsCard key={record._id} date={record.date} disease={record.disease} prescription={record.prescription} />
+            )
           )
-        ))}
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default Record;

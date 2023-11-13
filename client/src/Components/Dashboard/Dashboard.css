@@ -345,6 +345,29 @@
     }
 }
 
-.medReq{
+.newss{
+    align-items: center;
+    justify-content: center;
+    margin-left: 45vh;
+    height: 46vh;
     overflow-y: scroll;
+}
+
+@media (max-width: 800px) {
+    .newss{
+        margin-left: 10vh;
+    }
+}
+
+.news-today{
+    text-align: center;
+    margin-top: 5vh;
+    margin-left: 15vw;
+    font-size: 4vh;
+}
+
+@media (max-width: 800px) {
+    .news-today{
+        margin-left: 5vw;
+    }
 }
