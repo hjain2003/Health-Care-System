@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './StockCard.css';
 
-const StockCard = ({ medicineName, initialPrice, initialQuantity }) => {
+const StockCard = ({ medicid, medicineName, initialPrice, initialQuantity }) => {
   const [isUpdateClicked, setIsUpdateClicked] = useState(false);
   const [newQuantity, setNewQuantity] = useState(initialQuantity);
   const [newPrice, setNewPrice] = useState(initialPrice);
@@ -12,10 +12,29 @@ const StockCard = ({ medicineName, initialPrice, initialQuantity }) => {
     setIsUpdateClicked(true);
   };
 
-  const handleDoneClick = () => {
-    setCurrentQuantity(newQuantity);
-    setCurrentPrice(newPrice);
-    setIsUpdateClicked(false);
+  const handleDoneClick = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/stock/editCount/${medicid}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ newCount:  newQuantity, newPrice }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // setCurrentQuantity(data.quantity);
+        // setCurrentPrice(data.price);
+        window.location.reload();
+        setIsUpdateClicked(false);
+      } else {
+        console.error('Failed to update medicine count');
+      }
+    } catch (error) {
+      console.error('An error occurred while updating medicine count:', error);
+    }
   };
 
   const handleQuantityChange = (event) => {
@@ -44,7 +63,7 @@ const StockCard = ({ medicineName, initialPrice, initialQuantity }) => {
           </div>
         </div>
       </div>
-      
+
       {isUpdateClicked && (
         <div className='stockk bookcard-bottom'>
           <div className='new'>
@@ -74,6 +93,6 @@ const StockCard = ({ medicineName, initialPrice, initialQuantity }) => {
       )}
     </div>
   );
-}
+};
 
 export default StockCard;

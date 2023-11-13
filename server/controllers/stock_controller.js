@@ -61,10 +61,10 @@ export const deleteStockItem = async(req,res)=>{
 export const editStockCount = async (req, res) => {
     try {
         const stockId = req.params.stockId;
-        const { newCount } = req.body;
+        const { newCount, newPrice } = req.body;
 
-        if (!newCount) {
-            return res.status(422).json({ error: 'New count is required' });
+        if (!newCount && !newPrice) {
+            return res.status(422).json({ error: 'New count or new price is required' });
         }
 
         const stockItem = await Stock.findById(stockId);
@@ -73,7 +73,14 @@ export const editStockCount = async (req, res) => {
             return res.status(404).json({ error: 'Stock item not found' });
         }
 
-        stockItem.quantity = newCount;
+        if (newCount) {
+            stockItem.quantity = newCount;
+        }
+
+        if (newPrice) {
+            stockItem.price = newPrice;
+        }
+
         await stockItem.save();
 
         return res.status(200).json({ message: 'Stock count updated successfully' });
@@ -82,6 +89,7 @@ export const editStockCount = async (req, res) => {
         return res.status(500).json({ error: 'An error occurred' });
     }
 };
+
 
 
 

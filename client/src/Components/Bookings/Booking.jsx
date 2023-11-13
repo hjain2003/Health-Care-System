@@ -77,23 +77,29 @@ const Booking = () => {
           </div>
         )}
 
-        {bookingsData.map((booking) => {
-          if (isDoctor && booking.canceledBy === 'doctor') {
-            return null;
-          } else if (!isDoctor && booking.canceledBy === 'patient') {
-            return null;
+{bookingsData.map((booking) => {
+          // Check canceledBy field only for doctor's view
+          if (isDoctor) {
+            // Exclude bookings canceled by the doctor
+            if (booking.canceledBy === 'doctor') {
+              return null;
+            } else {
+              // For other cases (not canceled by doctor), show the booking
+              return (
+                <DBookingsCard
+                  key={booking._id}
+                  bookingId={booking._id}
+                  date={booking.date}
+                  timeSlot={booking.timeSlot}
+                  user={booking.user.name}
+                  userId={booking.user._id}
+                  remarks={booking.remarks}
+                />
+              );
+            }
           } else {
-            return isDoctor ? (
-              <DBookingsCard
-                key={booking._id}
-                bookingId={booking._id}
-                date={booking.date}
-                timeSlot={booking.timeSlot}
-                user={booking.user.name}
-                userId ={booking.user._id}
-                remarks={booking.remarks}
-              />
-            ) : (
+            // For patient's view, show the booking
+            return (
               <BookingsCard
                 key={booking._id}
                 bookingId={booking._id}
