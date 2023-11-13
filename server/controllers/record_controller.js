@@ -2,22 +2,22 @@ import Record from "../models/Record.js";
 import User from "../models/User.js";
 
 
-
 export const viewAllRecords = async (req, res) => {
-    const user = req.rootUser;
+  const user = req.rootUser;
 
-    if (user.role !== 'doctor') {
-        return res.status(403).json({ error: "Only doctors are allowed to add records" });
-    }
+  if (user.role !== 'doctor') {
+      return res.status(403).json({ error: "Only doctors are allowed to view all records" });
+  }
 
-    try {
-        const records = await Record.find();
-        res.status(200).json({ records });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
+  try {
+      const records = await Record.find().populate('user', 'name'); // Populate the 'user' field with only the 'name' property
+      res.status(200).json({ records });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+  }
 };
+
 
 export const viewMyRecords = async (req, res) => {
     const userId = req.rootUser;

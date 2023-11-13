@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './DBookingsCard.css';
 
-const DBookingsCard = ({ date, timeSlot, user, remarks, bookingId }) => {
+const DBookingsCard = ({ date, timeSlot, user, remarks, bookingId ,userId}) => {
   const [cancelText, setCancelText] = useState('Cancel');
   const [isPrescriptionPopUpOpen, setIsPrescriptionPopUpOpen] = useState(false);
   const [prescription, setPrescription] = useState('');
+  const [disease,setDisease] = useState('');
+  const [processingText,setProcessingText] = useState('Submit');
 
   const handleCancel = async () => {
     setCancelText('...');
@@ -50,12 +52,41 @@ const DBookingsCard = ({ date, timeSlot, user, remarks, bookingId }) => {
   const handlePrescriptionChange = (event) => {
     setPrescription(event.target.value);
   };
+  const handleDiseaseChange =(e)=>{
+    setDisease(e.target.value);
+  }
 
-  const handlePrescriptionSubmit = () => {
-    // Here you can perform actions with the prescription data
-    console.log('Prescription submitted:', prescription);
+  const handlePrescriptionSubmit = async() => {
+    
+    try {
+      setProcessingText("...");
+      const token = localStorage.getItem('jwtoken');
 
-    // Close the pop-up after submission
+      const response = await fetch(`http://localhost:5000/record/addRecord/${userId}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+              disease,
+              prescription
+          }),
+      });
+
+      if (response.ok) {
+        setProcessingText('Submit');
+          console.log('Record added successfully');
+      } else {
+        setProcessingText('Submit');
+          console.error('Failed to add record');
+      }
+  } catch (error) {
+    setProcessingText('Submit');
+      console.error('An error occurred while adding record:', error);
+  }
+    
     closePrescriptionPopUp();
   };
 
@@ -89,6 +120,8 @@ const DBookingsCard = ({ date, timeSlot, user, remarks, bookingId }) => {
         <div className='popup'>
           <div className='popup-content'>
             <h2>FILL PRESCRIPTION</h2>
+            <input type="text" placeholder='Disease' onChange={handleDiseaseChange}/>
+            <br />
             <textarea
               placeholder='Enter prescription details...'
               value={prescription}

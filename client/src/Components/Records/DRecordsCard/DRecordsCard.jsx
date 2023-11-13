@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './DRecordsCard.css';
 
-const DRecordsCard = ({ date, disease, name }) => {
+const DRecordsCard = ({ date, disease, name, prescription }) => {
   const [isPrescriptionPopUpOpen, setIsPrescriptionPopUpOpen] = useState(false);
 
   const openPrescriptionPopUp = () => {
@@ -36,7 +36,7 @@ const DRecordsCard = ({ date, disease, name }) => {
         <div className='popup'>
           <div className='popup-content'>
             <h2>PRESCRIPTION DETAILS</h2>
-            <p></p>
+            <p>{prescription}</p>
             <div className='popup-buttons'>
               <button onClick={closePrescriptionPopUp} className='can'>Close</button>
             </div>

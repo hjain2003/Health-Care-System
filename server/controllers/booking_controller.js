@@ -80,7 +80,7 @@ export const seeAllBookings = async (req, res) => {
         timeSlot: booking.timeSlot,
         remarks: booking.remarks,
         bookedOrNot: booking.bookedOrNot,
-        user: booking.user.name,
+        user: booking.user,
       }));
 
     return res.status(200).json({ bookings: bookingsWithUserName });

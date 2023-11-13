@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './Record.css';
 import Navbar from '../Navbar/Navbar';
-import RecordsCard from './RecordsCard/RecordsCard';
 import DRecordsCard from './DRecordsCard/DRecordsCard';
 
 const Record = () => {
-  const [isDoctor, setIsDoctor] = useState(false);
+  const [isDoctor, setIsDoctor] = useState(true);
   const [records, setRecords] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredRecords, setFilteredRecords] = useState([]);
 
   useEffect(() => {
     // Check user role from localStorage
@@ -47,40 +44,31 @@ const Record = () => {
     fetchRecords();
   }, [isDoctor]);
 
-  const handleSearchChange = (event) => {
-    const searchValue = event.target.value.toLowerCase();
-    setSearchTerm(searchValue);
-
-    const filtered = records.filter(record =>
-      record.name.toLowerCase().includes(searchValue)
-    );
-
-    setFilteredRecords(filtered);
-  };
-
   return (
     <div className='record-container'>
       <Navbar />
       <div className='records-content'>
         <div className='record-header'>PAST RECORDS</div>
+        
+        {/* Static Search Bar */}
         {isDoctor && (
           <div className='search-bar'>
             <input
               type='text'
               placeholder='Search names...'
               className='stocks-search-input'
-              value={searchTerm}
-              onChange={handleSearchChange}
+              value='' 
+              // onChange={handleSearchChange}  // Remove onChange handler
             />
             <button className='search-button'>Search</button>
           </div>
         )}
         
-        {filteredRecords.map(record => (
+        {records.map(record => (
           isDoctor ? (
             <DRecordsCard key={record._id} date={record.date} disease={record.disease} name={record.user.name} prescription={record.prescription} />
           ) : (
-            <RecordsCard key={record._id} date={record.date} disease={record.disease} />
+            <DRecordsCard key={record._id} date={record.date} disease={record.disease} prescription={record.prescription} />
           )
         ))}
       </div>

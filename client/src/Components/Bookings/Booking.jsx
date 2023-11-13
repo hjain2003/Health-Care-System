@@ -89,7 +89,8 @@ const Booking = () => {
                 bookingId={booking._id}
                 date={booking.date}
                 timeSlot={booking.timeSlot}
-                user={booking.user}
+                user={booking.user.name}
+                userId ={booking.user._id}
                 remarks={booking.remarks}
               />
             ) : (
