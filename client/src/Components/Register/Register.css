@@ -1,7 +1,7 @@
 .full_page_register {
-    height: 100vh;
+    height: 91vh;
     width: 100%;
-    background-color: #F0F2FF;
+    background-color: rgb(195, 230, 255);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,12 +10,21 @@ nav{
     height: 65px;
     /* padding: 20px; */
     width: 100%;
-    background-color: black;
+    background-color: rgb(0, 12, 88);
     color: white;
     line-height: 65px;
+    display: flex;
+    align-items: center;
 }
 nav h1{
-    margin-left: 20px;
+    margin-left: 10px;
+}
+nav img{
+    margin-left: 2vh;
+    height: 5vh;
+    width: 5vh;
+    background-color: transparent;
+    color: #71DDB1;
 }
 
 #registration_sucess{

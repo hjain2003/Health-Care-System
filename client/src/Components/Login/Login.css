@@ -1,10 +1,11 @@
 .full_page_login{
-    height: 100vh;
+    height: 91vh;
     width: 100%;
-    background-color: #F0F2FF;
+    background-color: rgb(195, 230, 255);
     display: flex;
     align-items: center;
     justify-content: center;
+
 }
 .login_box{
     height: 360px;

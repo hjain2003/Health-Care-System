@@ -85,7 +85,8 @@ const Register = () => {
   return (
     <>
       <nav>
-        <h1>Health Care Portal</h1>
+        <img src={require('../pngegg.png')} alt="Health Care Portal Logo" />
+        <h1>Medico</h1>
         {isRegister && <span id="registration_sucess">Registration Successful. You may login now &nbsp;&nbsp;&nbsp;<button id="navlogin" onClick={navigateToLogin}>LOGIN</button></span>}
       </nav>
       <div className="full_page_register">

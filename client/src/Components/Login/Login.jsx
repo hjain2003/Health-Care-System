@@ -70,7 +70,8 @@ const Login = () => {
   return (
     <>
       <nav>
-          <h1>Health Care Portal</h1>
+        <img src={require('../pngegg.png')} alt="Health Care Portal Logo" />
+        <h1>Medico</h1>
         </nav>
       <div className="full_page_login">
         <div className="login_box">
