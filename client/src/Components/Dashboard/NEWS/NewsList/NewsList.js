@@ -11,7 +11,7 @@ const NewsList = () => {
     const getArticles = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('https://newsapi.org/v2/everything?q=medicine&from=2023-10-13&sortBy=publishedAt&language=en&apiKey=b8f21b7a03c24f928daf52140b6e1233');
+        const response = await axios.get('https://newsapi.org/v2/everything?q=tesla&from=2023-10-23&language=en&sortBy=publishedAt&apiKey=b8f21b7a03c24f928daf52140b6e1233');
         setArticles(response.data.articles);
       } catch (error) {
         console.error('Error fetching news articles:', error);
